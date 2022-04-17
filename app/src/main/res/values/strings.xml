@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">RoomLearningApp</string>
+    <string name="submit_btn">Submit</string>
+    <string name="user_name_output_hint">User name output</string>
+    <string name="first_name_hint">First Name</string>
+    <string name="last_name_hint">Last Name</string>
+</resources>
