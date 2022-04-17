@@ -12,7 +12,7 @@ class UserRepository {
 
     companion object {
 
-        var userDatabase: UserDatabase? = null
+        private var userDatabase: UserDatabase? = null
 
         var userModel: LiveData<UserModel>? = null
 
@@ -21,7 +21,7 @@ class UserRepository {
 
             CoroutineScope(Dispatchers.IO).launch {
                 val userInfo = UserModel(firstName, lastName)
-                userDatabase!!.getUserDao().InsertData(userInfo)
+                userDatabase!!.getUserDao().insertData(userInfo)
             }
         }
 

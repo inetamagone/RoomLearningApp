@@ -58,6 +58,7 @@ class MainActivity : AppCompatActivity() {
                     findViewById<TextView>(R.id.output).text =
                         "Your name is $firstNameString $lastNameString"
                     Log.d(TAG, "Data got successfully!")
+                    val userList = userViewModel
                 }
             })
         }

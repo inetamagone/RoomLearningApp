@@ -11,7 +11,7 @@ import com.example.roomlearningapp.model.UserModel
 interface UserDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun InsertData(loginTableModel: UserModel)
+    suspend fun insertData(userModel: UserModel)
 
     @Query("SELECT * FROM user_table WHERE first_name = :firstName")
     fun getUserInfo(firstName: String?): LiveData<UserModel>
