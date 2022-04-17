@@ -1,9 +1,9 @@
 package com.example.roomlearningapp.database
 
-import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
+import com.example.roomlearningapp.HomeFragment
 import com.example.roomlearningapp.model.UserModel
 
 @Database(
@@ -19,14 +19,14 @@ abstract class UserDatabase : RoomDatabase() {
         @Volatile
         var INSTANCE: UserDatabase? = null
 
-        fun createDatabase(context: Context): UserDatabase {
+        fun createDatabase(context: HomeFragment): UserDatabase {
             val tempInstance = INSTANCE
             if (tempInstance != null) {
                 return tempInstance
             }
             synchronized(this) {
                 val instance = Room.databaseBuilder(
-                    context.applicationContext,
+                    context.requireContext(),
                     UserDatabase::class.java,
                     "user_db"
                 ).build()
