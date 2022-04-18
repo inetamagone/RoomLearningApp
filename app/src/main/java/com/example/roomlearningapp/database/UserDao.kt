@@ -14,5 +14,8 @@ interface UserDao {
     suspend fun insertData(UserModel: UserModel)
 
     @Query("SELECT * FROM user_table WHERE first_name = :firstName")
-    fun getUserInfo(firstName: String?): LiveData<UserModel>
+    fun getUserInfo(firstName: String?): LiveData<List<UserModel>>
+
+    @Query("SELECT * FROM user_table ORDER BY id DESC")
+    fun getAllUsers(): LiveData<List<UserModel>>
 }

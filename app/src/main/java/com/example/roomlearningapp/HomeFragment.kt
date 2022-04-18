@@ -41,7 +41,7 @@ class HomeFragment : Fragment() {
                 .trim()
                 .replaceFirstChar { if (it.isLowerCase()) it.titlecase(Locale.getDefault()) else it.toString() }
 
-            // Save entries to the database
+            // Save entries into the database
             when {
                 firstNameString.isEmpty() -> {
                     Log.d(TAG, "Please enter your First name")
@@ -57,7 +57,7 @@ class HomeFragment : Fragment() {
 
             // Get entries from the database
             userViewModel.getData(requireActivity(), firstNameString)!!
-                .observe(viewLifecycleOwner, androidx.lifecycle.Observer {
+                .observe(viewLifecycleOwner) {
                     if (it == null) {
                         Log.d(TAG, "Data was not found!")
                     } else {
@@ -65,7 +65,7 @@ class HomeFragment : Fragment() {
                             "Your name is $firstNameString $lastNameString"
                         Log.d(TAG, "Data got successfully!")
                     }
-                })
+                }
         }
         return view
     }

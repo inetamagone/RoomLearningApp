@@ -19,6 +19,7 @@ class MainActivity : AppCompatActivity() {
         val bottomNav: BottomNavigationView = findViewById(R.id.bottom_navigation)
         bottomNav.setOnNavigationItemSelectedListener(bottomNavListener)
     }
+
     // Navigation listener
     private val bottomNavListener = BottomNavigationView.OnNavigationItemSelectedListener {
         // Switch between menu options
