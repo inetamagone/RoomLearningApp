@@ -1,5 +1,6 @@
 package com.example.roomlearningapp.repository
 
+import android.content.Context
 import androidx.lifecycle.LiveData
 import com.example.roomlearningapp.HomeFragment
 import com.example.roomlearningapp.database.UserDatabase
@@ -16,8 +17,8 @@ class UserRepository {
 
         var userModel: LiveData<UserModel>? = null
 
-        fun insertData(fragment: HomeFragment, firstName: String, lastName: String) {
-            userDatabase = initializeDB(fragment)
+        fun insertData(context: Context, firstName: String, lastName: String) {
+            userDatabase = initializeDB(context)
 
             CoroutineScope(Dispatchers.IO).launch {
                 val userInfo = UserModel(firstName, lastName)
@@ -25,15 +26,15 @@ class UserRepository {
             }
         }
 
-        fun getUserDetails(fragment: HomeFragment, firstName: String): LiveData<UserModel>? {
-            userDatabase = initializeDB(fragment)
+        fun getUserDetails(context: Context, firstName: String): LiveData<UserModel>? {
+            userDatabase = initializeDB(context)
 
             userModel = userDatabase!!.getUserDao().getUserInfo(firstName)
             return userModel
         }
 
-        private fun initializeDB(fragment: HomeFragment): UserDatabase {
-            return UserDatabase.createDatabase(fragment)
+        private fun initializeDB(context: Context): UserDatabase {
+            return UserDatabase.createDatabase(context)
         }
     }
 }

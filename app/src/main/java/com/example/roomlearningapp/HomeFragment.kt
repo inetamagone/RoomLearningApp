@@ -50,13 +50,13 @@ class HomeFragment : Fragment() {
                     Log.d(TAG, "Please enter your Last name")
                 }
                 else -> {
-                    userViewModel.insertData(this, firstNameString, lastNameString)
+                    userViewModel.insertData(requireActivity(), firstNameString, lastNameString)
                     Log.d(TAG, "Inserted into database!")
                 }
             }
 
             // Get entries from the database
-            userViewModel.getData(this, firstNameString)!!
+            userViewModel.getData(requireActivity(), firstNameString)!!
                 .observe(viewLifecycleOwner, androidx.lifecycle.Observer {
                     if (it == null) {
                         Log.d(TAG, "Data was not found!")
