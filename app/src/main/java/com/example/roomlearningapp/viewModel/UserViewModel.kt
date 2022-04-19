@@ -29,9 +29,15 @@ class UserViewModel : ViewModel() {
         return liveDataListOfUser
     }
 
-    fun deleteAllUsers(){
+    fun deleteAllUsers() {
         viewModelScope.launch(Dispatchers.IO) {
             UserRepository.deleteAllUsers()
+        }
+    }
+
+    fun deleteUser(userModel: UserModel) {
+        viewModelScope.launch(Dispatchers.IO) {
+            UserRepository.deleteUser(userModel)
         }
     }
 }

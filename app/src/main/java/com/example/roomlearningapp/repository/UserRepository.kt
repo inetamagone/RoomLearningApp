@@ -43,6 +43,8 @@ class UserRepository {
             userDatabase!!.getUserDao().deleteAllUsers()
         }
 
+        suspend fun deleteUser(userModel: UserModel) = userDatabase!!.getUserDao().deleteUser(userModel)
+
         private fun initializeDB(context: Context): UserDatabase {
             return UserDatabase.createDatabase(context)
         }

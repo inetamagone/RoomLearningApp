@@ -63,6 +63,7 @@ class HomeFragment : Fragment() {
                     } else {
                         val outputText = "Your name is ${it.firstName} ${it.lastName}"
                         requireActivity().findViewById<TextView>(R.id.output).text = outputText
+                        Log.d(TAG, outputText)
 
                         requireActivity().findViewById<TextView>(R.id.first_name).text = ""
                         requireActivity().findViewById<TextView>(R.id.last_name).text = ""

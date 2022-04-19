@@ -6,11 +6,16 @@ import android.util.Log
 import android.view.*
 import androidx.fragment.app.Fragment
 import android.widget.Toast
+import androidx.core.view.accessibility.AccessibilityEventCompat.setAction
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.roomlearningapp.adapters.UserListAdapter
+import com.example.roomlearningapp.model.UserModel
 import com.example.roomlearningapp.viewModel.UserViewModel
+import com.google.android.material.snackbar.Snackbar
 
 private const val TAG = "RecyclerFragment"
 
@@ -48,16 +53,68 @@ class RecyclerFragment : Fragment() {
         return view
     }
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        val recyclerView = view.findViewById<RecyclerView>(R.id.recycler_view)
+        val adapter = UserListAdapter()
+        recyclerView.adapter = adapter
+
+        // Swipe delete method
+        val itemTouchHelperCallback = object : ItemTouchHelper.SimpleCallback(
+            ItemTouchHelper.UP or ItemTouchHelper.DOWN,
+            ItemTouchHelper.LEFT or ItemTouchHelper.RIGHT
+        ) {
+            override fun onMove(
+                recyclerView: RecyclerView,
+                viewHolder: RecyclerView.ViewHolder,
+                target: RecyclerView.ViewHolder
+            ): Boolean {
+                return true
+            }
+
+            override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
+                val position = viewHolder.adapterPosition
+                val user = adapter.differ.currentList[position]
+                userViewModel.deleteUser(user)
+                Toast.makeText(
+                    requireContext(),
+                    "User deleted!",
+                    Toast.LENGTH_SHORT
+                )
+                    .show()
+            }
+        }
+
+        ItemTouchHelper(itemTouchHelperCallback).apply {
+            attachToRecyclerView(recyclerView)
+        }
+
+        userViewModel.getAllData(requireActivity())!!
+            .observe(viewLifecycleOwner) { users ->
+                if (users == null) {
+                    Log.d(TAG, "Data was not found!")
+                } else {
+                    users.let {
+                        adapter.differ.submitList(users)
+                        Log.d(TAG, "Data submitted to adapter!")
+                    }
+                }
+            }
+    }
+
     // Delete all method
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         inflater.inflate(R.menu.delete_menu, menu)
     }
+
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        if(item.itemId == R.id.menu_delete){
+        if (item.itemId == R.id.menu_delete) {
             deleteAllUsers()
         }
         return super.onOptionsItemSelected(item)
     }
+
     private fun deleteAllUsers() {
         val builder = AlertDialog.Builder(requireContext())
         builder.setPositiveButton("OK") { _, _ ->
@@ -65,7 +122,8 @@ class RecyclerFragment : Fragment() {
             Toast.makeText(
                 requireContext(),
                 "All users are removed",
-                Toast.LENGTH_SHORT).show()
+                Toast.LENGTH_SHORT
+            ).show()
         }
         builder.setNegativeButton("No") { _, _ -> }
         builder.setTitle("Delete All")
