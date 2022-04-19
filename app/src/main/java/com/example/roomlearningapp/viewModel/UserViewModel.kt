@@ -8,20 +8,20 @@ import com.example.roomlearningapp.repository.UserRepository
 
 class UserViewModel : ViewModel() {
 
-    var liveDataOfUser: LiveData<List<UserModel>>? = null
-    var allUserList: List<UserModel>? = null
+    private var liveDataOfUser: LiveData<UserModel>? = null
+    var liveDataListOfUser: LiveData<List<UserModel>>? = null
 
     fun insertData(context: Context, firstName: String, lastName: String) {
         UserRepository.insertData(context, firstName, lastName)
     }
 
-    fun getData(context: Context, firstName: String): LiveData<List<UserModel>>? {
+    fun getData(context: Context, firstName: String): LiveData<UserModel>? {
         liveDataOfUser = UserRepository.getUserDetails(context, firstName)
         return liveDataOfUser
     }
 
     fun getAllData(context: Context): LiveData<List<UserModel>>? {
-        liveDataOfUser = UserRepository.getAllUserDetails(context)
-        return liveDataOfUser
+        liveDataListOfUser = UserRepository.getAllUserDetails(context)
+        return liveDataListOfUser
     }
 }

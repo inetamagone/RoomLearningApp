@@ -61,7 +61,7 @@ class HomeFragment : Fragment() {
                     if (it == null) {
                         Log.d(TAG, "Data was not found!")
                     } else {
-                        val outputText = "Your name is ${it[0].firstName} ${it[0].lastName}"
+                        val outputText = "Your name is ${it.firstName} ${it.lastName}"
                         requireActivity().findViewById<TextView>(R.id.output).text = outputText
 
                         requireActivity().findViewById<TextView>(R.id.first_name).text = ""
