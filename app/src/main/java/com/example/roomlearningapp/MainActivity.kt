@@ -20,7 +20,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var firstNameString: String
     private lateinit var lastNameString: String
 
-    @SuppressLint("SetTextI18n")
+    @SuppressLint("SetTextI18n", "CutPasteId")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -51,15 +51,19 @@ class MainActivity : AppCompatActivity() {
             }
 
             // Get entries from the database
-            userViewModel.getData(this, firstNameString)!!.observe(this, Observer {
+            userViewModel.getData(this, firstNameString)!!
+                .observe(this) {
                 if (it == null) {
                     Log.d(TAG, "Data was not found!")
                 } else {
-                    findViewById<TextView>(R.id.output).text =
-                        "Your name is $firstNameString $lastNameString"
+                    val outputText = "Your name is ${it.firstName} ${it.lastName}"
+                    findViewById<TextView>(R.id.output).text = outputText
+
+                    findViewById<TextView>(R.id.first_name).text = ""
+                    findViewById<TextView>(R.id.last_name).text = ""
                     Log.d(TAG, "Data got successfully!")
                 }
-            })
+            }
         }
     }
 }
