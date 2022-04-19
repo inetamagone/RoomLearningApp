@@ -12,7 +12,7 @@ class UserRepository {
 
     companion object {
 
-        var userDatabase: UserDatabase? = null
+        private var userDatabase: UserDatabase? = null
         private var userModel: LiveData<List<UserModel>>? = null
 
         fun insertData(context: Context, firstName: String, lastName: String) {

@@ -8,7 +8,8 @@ import com.example.roomlearningapp.repository.UserRepository
 
 class UserViewModel : ViewModel() {
 
-    private var liveDataOfUser: LiveData<List<UserModel>>? = null
+    var liveDataOfUser: LiveData<List<UserModel>>? = null
+    var allUserList: List<UserModel>? = null
 
     fun insertData(context: Context, firstName: String, lastName: String) {
         UserRepository.insertData(context, firstName, lastName)
