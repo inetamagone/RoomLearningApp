@@ -1,11 +1,11 @@
 package com.example.roomlearningapp
 
+import android.app.AlertDialog
 import android.os.Bundle
 import android.util.Log
+import android.view.*
 import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.widget.Toast
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -42,6 +42,34 @@ class RecyclerFragment : Fragment() {
                     }
                 }
             }
+        // Add menu
+        setHasOptionsMenu(true)
+
         return view
+    }
+
+    // Delete all method
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        inflater.inflate(R.menu.delete_menu, menu)
+    }
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        if(item.itemId == R.id.menu_delete){
+            deleteAllUsers()
+        }
+        return super.onOptionsItemSelected(item)
+    }
+    private fun deleteAllUsers() {
+        val builder = AlertDialog.Builder(requireContext())
+        builder.setPositiveButton("OK") { _, _ ->
+            userViewModel.deleteAllUsers()
+            Toast.makeText(
+                requireContext(),
+                "All users are removed",
+                Toast.LENGTH_SHORT).show()
+        }
+        builder.setNegativeButton("No") { _, _ -> }
+        builder.setTitle("Delete All")
+        builder.setMessage("Do you want to delete all users?")
+        builder.create().show()
     }
 }

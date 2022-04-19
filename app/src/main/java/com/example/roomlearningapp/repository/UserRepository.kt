@@ -39,6 +39,10 @@ class UserRepository {
             return userModelList
         }
 
+        suspend fun deleteAllUsers(){
+            userDatabase!!.getUserDao().deleteAllUsers()
+        }
+
         private fun initializeDB(context: Context): UserDatabase {
             return UserDatabase.createDatabase(context)
         }

@@ -3,8 +3,12 @@ package com.example.roomlearningapp.viewModel
 import android.content.Context
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.example.roomlearningapp.model.UserModel
 import com.example.roomlearningapp.repository.UserRepository
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+
 
 class UserViewModel : ViewModel() {
 
@@ -23,5 +27,11 @@ class UserViewModel : ViewModel() {
     fun getAllData(context: Context): LiveData<List<UserModel>>? {
         liveDataListOfUser = UserRepository.getAllUserDetails(context)
         return liveDataListOfUser
+    }
+
+    fun deleteAllUsers(){
+        viewModelScope.launch(Dispatchers.IO) {
+            UserRepository.deleteAllUsers()
+        }
     }
 }
