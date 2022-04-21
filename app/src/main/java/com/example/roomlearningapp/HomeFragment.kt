@@ -2,6 +2,7 @@ package com.example.roomlearningapp
 
 import android.annotation.SuppressLint
 import android.os.Bundle
+import android.text.Editable
 import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -9,10 +10,10 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.TextView
+import android.widget.Toast
 import androidx.lifecycle.ViewModelProvider
 import com.example.roomlearningapp.viewModel.UserViewModel
 import com.google.android.material.textfield.TextInputEditText
-import java.util.*
 
 private const val TAG = "HomeFragment"
 
@@ -34,20 +35,26 @@ class HomeFragment : Fragment() {
 
         view.findViewById<Button>(R.id.submit_button).setOnClickListener {
 
-            firstNameString = view.findViewById<TextInputEditText>(R.id.first_name).text.toString()
-                .trim()
-                .replaceFirstChar { if (it.isLowerCase()) it.titlecase(Locale.getDefault()) else it.toString() }
-            lastNameString = view.findViewById<TextInputEditText>(R.id.last_name).text.toString()
-                .trim()
-                .replaceFirstChar { if (it.isLowerCase()) it.titlecase(Locale.getDefault()) else it.toString() }
+            firstNameString = view.findViewById<TextInputEditText>(R.id.first_name).text.formatting()
+            lastNameString = view.findViewById<TextInputEditText>(R.id.last_name).text.formatting()
 
             // Save entries into the database
             when {
                 firstNameString.isEmpty() -> {
-                    Log.d(TAG, "Please enter your First name")
+                    Toast.makeText(
+                        requireContext(),
+                        "Please enter your First name!",
+                        Toast.LENGTH_SHORT
+                    )
+                        .show()
                 }
                 lastNameString.isEmpty() -> {
-                    Log.d(TAG, "Please enter your Last name")
+                    Toast.makeText(
+                        requireContext(),
+                        "Please enter your Last name!",
+                        Toast.LENGTH_SHORT
+                    )
+                        .show()
                 }
                 else -> {
                     userViewModel.insertData(requireActivity(), firstNameString, lastNameString)
@@ -63,7 +70,6 @@ class HomeFragment : Fragment() {
                     } else {
                         val outputText = "Your name is ${it.firstName} ${it.lastName}"
                         requireActivity().findViewById<TextView>(R.id.output).text = outputText
-                        Log.d(TAG, outputText)
 
                         requireActivity().findViewById<TextView>(R.id.first_name).text = ""
                         requireActivity().findViewById<TextView>(R.id.last_name).text = ""
@@ -73,4 +79,9 @@ class HomeFragment : Fragment() {
         }
         return view
     }
+
+}
+
+private fun Editable?.formatting(): String {
+    return this.toString().trim().capitalize()
 }
