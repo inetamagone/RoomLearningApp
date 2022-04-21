@@ -22,6 +22,7 @@ private const val TAG = "RecyclerFragment"
 class RecyclerFragment : Fragment() {
 
     private lateinit var userViewModel: UserViewModel
+    private lateinit var adapter: UserListAdapter
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -31,7 +32,7 @@ class RecyclerFragment : Fragment() {
         userViewModel = ViewModelProvider(this)[UserViewModel::class.java]
 
         val recyclerView = view.findViewById<RecyclerView>(R.id.recycler_view)
-        val adapter = UserListAdapter()
+        adapter = UserListAdapter()
         recyclerView.adapter = adapter
         recyclerView.layoutManager = LinearLayoutManager(requireContext())
 
@@ -47,20 +48,15 @@ class RecyclerFragment : Fragment() {
                     }
                 }
             }
+        swipeDelete(recyclerView)
         // Add menu
         setHasOptionsMenu(true)
 
         return view
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-
-        val recyclerView = view.findViewById<RecyclerView>(R.id.recycler_view)
-        val adapter = UserListAdapter()
-        recyclerView.adapter = adapter
-
-        // Swipe delete method
+    // Swipe delete method
+    private fun swipeDelete(recyclerView: RecyclerView) {
         val itemTouchHelperCallback = object : ItemTouchHelper.SimpleCallback(
             ItemTouchHelper.UP or ItemTouchHelper.DOWN,
             ItemTouchHelper.LEFT or ItemTouchHelper.RIGHT
@@ -77,6 +73,8 @@ class RecyclerFragment : Fragment() {
                 val position = viewHolder.adapterPosition
                 val user = adapter.differ.currentList[position]
                 userViewModel.deleteUser(user)
+                adapter.notifyItemRemoved(position)
+
                 Toast.makeText(
                     requireContext(),
                     "User deleted!",
@@ -89,18 +87,6 @@ class RecyclerFragment : Fragment() {
         ItemTouchHelper(itemTouchHelperCallback).apply {
             attachToRecyclerView(recyclerView)
         }
-
-        userViewModel.getAllData(requireActivity())!!
-            .observe(viewLifecycleOwner) { users ->
-                if (users == null) {
-                    Log.d(TAG, "Data was not found!")
-                } else {
-                    users.let {
-                        adapter.differ.submitList(users)
-                        Log.d(TAG, "Data submitted to adapter!")
-                    }
-                }
-            }
     }
 
     // Delete all method
