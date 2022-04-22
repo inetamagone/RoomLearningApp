@@ -70,31 +70,16 @@ class HomeFragment : Fragment() {
                         val outputText = "Your name is ${it.firstName} ${it.lastName}"
                         requireActivity().findViewById<TextView>(R.id.output).text = outputText
 
-                        requireActivity().findViewById<TextView>(R.id.first_name).text = ""
-                        requireActivity().findViewById<TextView>(R.id.last_name).text = ""
+                        requireActivity().findViewById<TextInputEditText>(R.id.first_name)
+                            .setText("")
+                        requireActivity().findViewById<TextInputEditText>(R.id.last_name)
+                            .setText("")
                         Log.d(TAG, "Data got successfully!")
                     }
                 }
         }
         return view
     }
-
-//    override fun onSaveInstanceState(outState: Bundle) {
-//        super.onSaveInstanceState(outState)
-//        firstNameString = requireActivity().findViewById<TextInputEditText>(R.id.first_name).text.toString()
-//        lastNameString = requireActivity().findViewById<TextInputEditText>(R.id.last_name).text.toString()
-//        outState.putString("Saved firstName", firstNameString)
-//        outState.putString("Saved lastName", lastNameString)
-//        Log.d(TAG, "onSaveInstanceState firstNameString: $firstNameString $lastNameString")
-//    }
-//
-//    override fun onViewStateRestored(savedInstanceState: Bundle?) {
-//        super.onViewStateRestored(savedInstanceState)
-//        firstNameString = savedInstanceState?.getString("Saved firstName", "").toString()
-//        lastNameString = savedInstanceState?.getString("Saved lastName", "").toString()
-//        requireActivity().findViewById<TextInputEditText>(R.id.first_name).setText(firstNameString)
-//        requireActivity().findViewById<TextInputEditText>(R.id.last_name).setText(lastNameString)
-//    }
 }
 
 private fun Editable?.formatting(): String {
