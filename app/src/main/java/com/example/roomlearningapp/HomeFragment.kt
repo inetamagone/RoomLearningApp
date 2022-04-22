@@ -11,7 +11,9 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.TextView
 import android.widget.Toast
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import com.example.roomlearningapp.model.UserModel
 import com.example.roomlearningapp.viewModel.UserViewModel
 import com.google.android.material.textfield.TextInputEditText
 
@@ -33,8 +35,23 @@ class HomeFragment : Fragment() {
 
         val view = inflater.inflate(R.layout.fragment_home, container, false)
 
-        view.findViewById<Button>(R.id.submit_button).setOnClickListener {
+        val firstNameInput = view.findViewById<TextInputEditText>(R.id.first_name).text.toString()
+        val lastNameInput = view.findViewById<TextInputEditText>(R.id.last_name).text.toString()
+        val userData = mutableListOf<UserModel>()
+        val userModel = UserModel(firstNameInput, lastNameInput)
+        userData.add(userModel)
+        userViewModel.updateViewModelForScreenRotation(userData)
+        userViewModel.userLiveData.observe(viewLifecycleOwner, Observer { liveData ->
+            if (liveData == null) {
+                view.findViewById<TextInputEditText>(R.id.first_name).setText("")
+                view.findViewById<TextInputEditText>(R.id.last_name).setText("")
+            } else {
+                view.findViewById<TextInputEditText>(R.id.first_name).setText(liveData[0].firstName)
+                view.findViewById<TextInputEditText>(R.id.last_name).setText(liveData[0].lastName)
+            }
+        })
 
+        view.findViewById<Button>(R.id.submit_button).setOnClickListener {
             firstNameString = view.findViewById<TextInputEditText>(R.id.first_name).text.formatting()
             lastNameString = view.findViewById<TextInputEditText>(R.id.last_name).text.formatting()
 
@@ -79,7 +96,6 @@ class HomeFragment : Fragment() {
         }
         return view
     }
-
 }
 
 private fun Editable?.formatting(): String {
