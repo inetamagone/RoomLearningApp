@@ -11,9 +11,7 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.TextView
 import android.widget.Toast
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import com.example.roomlearningapp.model.UserModel
 import com.example.roomlearningapp.viewModel.UserViewModel
 import com.google.android.material.textfield.TextInputEditText
 
@@ -30,26 +28,10 @@ class HomeFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-
+        Log.d(TAG, "onCreateView called")
         userViewModel = ViewModelProvider(this)[UserViewModel::class.java]
 
         val view = inflater.inflate(R.layout.fragment_home, container, false)
-
-        val firstNameInput = view.findViewById<TextInputEditText>(R.id.first_name).text.toString()
-        val lastNameInput = view.findViewById<TextInputEditText>(R.id.last_name).text.toString()
-        val userData = mutableListOf<UserModel>()
-        val userModel = UserModel(firstNameInput, lastNameInput)
-        userData.add(userModel)
-        userViewModel.updateViewModelForScreenRotation(userData)
-        userViewModel.userLiveData.observe(viewLifecycleOwner, Observer { liveData ->
-            if (liveData == null) {
-                view.findViewById<TextInputEditText>(R.id.first_name).setText("")
-                view.findViewById<TextInputEditText>(R.id.last_name).setText("")
-            } else {
-                view.findViewById<TextInputEditText>(R.id.first_name).setText(liveData[0].firstName)
-                view.findViewById<TextInputEditText>(R.id.last_name).setText(liveData[0].lastName)
-            }
-        })
 
         view.findViewById<Button>(R.id.submit_button).setOnClickListener {
             firstNameString = view.findViewById<TextInputEditText>(R.id.first_name).text.formatting()
@@ -80,7 +62,7 @@ class HomeFragment : Fragment() {
             }
 
             // Get entries from the database
-            userViewModel.getData(requireActivity(), firstNameString)!!
+            userViewModel.getData(requireActivity(), firstNameString)
                 .observe(viewLifecycleOwner) {
                     if (it == null) {
                         Log.d(TAG, "Data was not found!")
@@ -96,6 +78,23 @@ class HomeFragment : Fragment() {
         }
         return view
     }
+
+//    override fun onSaveInstanceState(outState: Bundle) {
+//        super.onSaveInstanceState(outState)
+//        firstNameString = requireActivity().findViewById<TextInputEditText>(R.id.first_name).text.toString()
+//        lastNameString = requireActivity().findViewById<TextInputEditText>(R.id.last_name).text.toString()
+//        outState.putString("Saved firstName", firstNameString)
+//        outState.putString("Saved lastName", lastNameString)
+//        Log.d(TAG, "onSaveInstanceState firstNameString: $firstNameString $lastNameString")
+//    }
+//
+//    override fun onViewStateRestored(savedInstanceState: Bundle?) {
+//        super.onViewStateRestored(savedInstanceState)
+//        firstNameString = savedInstanceState?.getString("Saved firstName", "").toString()
+//        lastNameString = savedInstanceState?.getString("Saved lastName", "").toString()
+//        requireActivity().findViewById<TextInputEditText>(R.id.first_name).setText(firstNameString)
+//        requireActivity().findViewById<TextInputEditText>(R.id.last_name).setText(lastNameString)
+//    }
 }
 
 private fun Editable?.formatting(): String {
