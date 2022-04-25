@@ -4,25 +4,11 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
-import androidx.recyclerview.widget.AsyncListDiffer
-import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.example.roomlearningapp.R
 import com.example.roomlearningapp.model.UserModel
 
-class UserListAdapter : RecyclerView.Adapter<UserListAdapter.UserViewHolder>() {
-
-    private val userComparatorDifferCallback = object : DiffUtil.ItemCallback<UserModel>() {
-        override fun areItemsTheSame(oldItem: UserModel, newItem: UserModel): Boolean {
-            return oldItem === newItem
-        }
-
-        override fun areContentsTheSame(oldItem: UserModel, newItem: UserModel): Boolean {
-            return oldItem.lastName == newItem.lastName
-        }
-    }
-
-    val differ = AsyncListDiffer(this, userComparatorDifferCallback)
+class UserListAdapter(private val userList: List<UserModel>)  : RecyclerView.Adapter<UserListAdapter.UserViewHolder>() {
 
     override fun onCreateViewHolder(
         parent: ViewGroup,
@@ -34,7 +20,7 @@ class UserListAdapter : RecyclerView.Adapter<UserListAdapter.UserViewHolder>() {
     }
 
     override fun onBindViewHolder(holder: UserViewHolder, position: Int) {
-        holder.bind(differ.currentList[position])
+        holder.bind(userList[position])
     }
 
     class UserViewHolder(private val binding: View) : RecyclerView.ViewHolder(binding) {
@@ -46,7 +32,11 @@ class UserListAdapter : RecyclerView.Adapter<UserListAdapter.UserViewHolder>() {
         }
     }
 
+    fun getItemByID(id: Int): UserModel {
+        return userList[id]
+    }
+
     override fun getItemCount(): Int {
-        return differ.currentList.size
+        return userList.size
     }
 }

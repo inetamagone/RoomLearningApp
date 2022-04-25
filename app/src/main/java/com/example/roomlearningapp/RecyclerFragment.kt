@@ -6,16 +6,12 @@ import android.util.Log
 import android.view.*
 import androidx.fragment.app.Fragment
 import android.widget.Toast
-import androidx.core.view.accessibility.AccessibilityEventCompat.setAction
 import androidx.lifecycle.ViewModelProvider
-import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.roomlearningapp.adapters.UserListAdapter
-import com.example.roomlearningapp.model.UserModel
 import com.example.roomlearningapp.viewModel.UserViewModel
-import com.google.android.material.snackbar.Snackbar
 
 private const val TAG = "RecyclerFragment"
 
@@ -32,9 +28,6 @@ class RecyclerFragment : Fragment() {
         userViewModel = ViewModelProvider(this)[UserViewModel::class.java]
 
         val recyclerView = view.findViewById<RecyclerView>(R.id.recycler_view)
-        adapter = UserListAdapter()
-        recyclerView.adapter = adapter
-        recyclerView.layoutManager = LinearLayoutManager(requireContext())
 
         // Getting data from the database and passing to the adapter
         userViewModel.getAllData(requireActivity())!!
@@ -43,8 +36,9 @@ class RecyclerFragment : Fragment() {
                     Log.d(TAG, "Data was not found!")
                 } else {
                     users.let {
-                        adapter.differ.submitList(users)
-                        Log.d(TAG, "Data submitted to adapter!")
+                        adapter = UserListAdapter(users)
+                        recyclerView.adapter = adapter
+                        recyclerView.layoutManager = LinearLayoutManager(requireContext())
                     }
                 }
             }
@@ -70,16 +64,8 @@ class RecyclerFragment : Fragment() {
             }
 
             override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
-                val position = viewHolder.adapterPosition
-                val user = adapter.differ.currentList[position]
-                userViewModel.deleteUser(user)
-                adapter.notifyItemRemoved(position)
-
-                Toast.makeText(
-                    requireContext(),
-                    "User deleted!",
-                    Toast.LENGTH_SHORT
-                )
+                userViewModel.deleteUser(adapter.getItemByID(viewHolder.adapterPosition))
+                Toast.makeText(requireContext(), "User deleted!", Toast.LENGTH_SHORT)
                     .show()
             }
         }
