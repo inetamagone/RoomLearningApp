@@ -13,8 +13,8 @@ class UserRepository {
     companion object {
 
         private var userDatabase: UserDatabase? = null
-
-        var userModel: LiveData<UserModel>? = null
+        private var userModel: LiveData<UserModel>? = null
+        private var userModelList: LiveData<List<UserModel>>? = null
 
         fun insertData(context: Context, firstName: String, lastName: String) {
             userDatabase = initializeDB(context)
@@ -31,6 +31,19 @@ class UserRepository {
             userModel = userDatabase!!.getUserDao().getUserInfo(firstName)
             return userModel
         }
+
+        fun getAllUserDetails(context: Context): LiveData<List<UserModel>>? {
+            userDatabase = initializeDB(context)
+
+            userModelList = userDatabase!!.getUserDao().getAllUsers()
+            return userModelList
+        }
+
+        suspend fun deleteAllUsers(){
+            userDatabase!!.getUserDao().deleteAllUsers()
+        }
+
+        suspend fun deleteUser(userModel: UserModel) = userDatabase!!.getUserDao().deleteUser(userModel)
 
         private fun initializeDB(context: Context): UserDatabase {
             return UserDatabase.createDatabase(context)
