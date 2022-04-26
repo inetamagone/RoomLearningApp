@@ -15,4 +15,5 @@
     <string name="move_user_down">Move user down</string>
     <string name="delete_user">Delete user</string>
     <string name="highlight_user">Highlight user</string>
+    <string name="delelete">Delete</string>
 </resources>
