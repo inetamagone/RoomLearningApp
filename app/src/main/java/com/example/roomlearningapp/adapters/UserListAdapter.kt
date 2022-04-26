@@ -11,7 +11,6 @@ import android.widget.LinearLayout
 import android.widget.PopupMenu
 import android.widget.TextView
 import android.widget.Toast
-import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.example.roomlearningapp.R
 import com.example.roomlearningapp.model.UserModel
@@ -84,9 +83,7 @@ class UserListAdapter(private var userList: List<UserModel>, private val context
                     R.id.highlight_user -> {
                         viewHolder.itemView
                             .findViewById<LinearLayout>(R.id.text_container)
-                            .setBackgroundColor(
-                                Color.parseColor("#03FDFC")
-                            )
+                            .setBackgroundColor()
                         Log.d(TAG, "Highlight user")
                         true
                     }
@@ -107,6 +104,6 @@ class UserListAdapter(private var userList: List<UserModel>, private val context
     }
 }
 
-//private fun View.setBackgroundColor() {
-//    this.setBackgroundColor(Color.parseColor("#ffffff"))
-//}
+private fun View.setBackgroundColor() {
+    this.setBackgroundColor(Color.parseColor("#03FDFC"))
+}
