@@ -74,7 +74,7 @@ class UserListAdapter(private var userList: List<UserModel>, private val context
                             .setNegativeButton("No") { dialog, _ ->
                                 dialog.dismiss()
                             }
-                            .setTitle("Delete")
+                            .setTitle(context.getString(R.string.delelete))
                             .setIcon(R.drawable.warning)
                             .setMessage("Delete this User?")
                             .create()
@@ -84,9 +84,7 @@ class UserListAdapter(private var userList: List<UserModel>, private val context
                     R.id.highlight_user -> {
                         viewHolder.itemView
                             .findViewById<LinearLayout>(R.id.text_container)
-                            .setBackgroundColor(
-                                Color.parseColor("#03FDFC")
-                            )
+                            .setBackgroundColor(context.resources.getColor(R.color.highlight_color))
                         Log.d(TAG, "Highlight user")
                         true
                     }
