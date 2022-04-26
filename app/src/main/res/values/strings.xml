@@ -10,4 +10,9 @@
     <string name="first_name">First Name</string>
     <string name="last_name">Last Name</string>
     <string name="delete_btn">Delete</string>
+    <string name="menu_dots">⋮</string>
+    <string name="move_user_up">Move user up</string>
+    <string name="move_user_down">Move user down</string>
+    <string name="delete_user">Delete user</string>
+    <string name="highlight_user">Highlight user</string>
 </resources>

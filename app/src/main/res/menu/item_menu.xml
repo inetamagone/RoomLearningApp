@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:tools="http://schemas.android.com/tools"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto" >
+    <item
+        android:id="@+id/move_up"
+        android:title="@string/move_user_up"
+        android:icon="@drawable/arrow_up"
+        app:showAsAction="always" />
+
+    <item
+        android:id="@+id/move_down"
+        android:title="@string/move_user_down"
+        android:icon="@drawable/arrow_down"
+        app:showAsAction="always"
+        tools:ignore="AlwaysShowAction" />
+
+    <item
+        android:id="@+id/remove_user"
+        android:title="@string/delete_user"
+        android:icon="@drawable/delete"
+        app:showAsAction="always"/>
+    <item
+        android:id="@+id/highlight_user"
+        android:title="@string/highlight_user"
+        android:icon="@drawable/colored"
+        app:showAsAction="always"/>
+</menu>

@@ -7,7 +7,6 @@ import android.view.*
 import androidx.fragment.app.Fragment
 import android.widget.Toast
 import androidx.lifecycle.ViewModelProvider
-import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.roomlearningapp.adapters.UserListAdapter
@@ -30,49 +29,21 @@ class RecyclerFragment : Fragment() {
         val recyclerView = view.findViewById<RecyclerView>(R.id.recycler_view)
 
         // Getting data from the database and passing to the adapter
-        userViewModel.getAllData(requireActivity())!!
+        userViewModel.getAllData(requireActivity())
             .observe(viewLifecycleOwner) { users ->
                 if (users == null) {
                     Log.d(TAG, "Data was not found!")
                 } else {
                     users.let {
-                        adapter = UserListAdapter(users)
+                        adapter = UserListAdapter(users, requireContext())
                         recyclerView.adapter = adapter
                         recyclerView.layoutManager = LinearLayoutManager(requireContext())
                     }
                 }
             }
-        swipeDelete(recyclerView)
-        // Add menu
+        // Add options menu
         setHasOptionsMenu(true)
-
         return view
-    }
-
-    // Swipe delete method
-    private fun swipeDelete(recyclerView: RecyclerView) {
-        val itemTouchHelperCallback = object : ItemTouchHelper.SimpleCallback(
-            ItemTouchHelper.UP or ItemTouchHelper.DOWN,
-            ItemTouchHelper.LEFT or ItemTouchHelper.RIGHT
-        ) {
-            override fun onMove(
-                recyclerView: RecyclerView,
-                viewHolder: RecyclerView.ViewHolder,
-                target: RecyclerView.ViewHolder
-            ): Boolean {
-                return true
-            }
-
-            override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
-                userViewModel.deleteUser(adapter.getItemByID(viewHolder.adapterPosition))
-                Toast.makeText(requireContext(), "User deleted!", Toast.LENGTH_SHORT)
-                    .show()
-            }
-        }
-
-        ItemTouchHelper(itemTouchHelperCallback).apply {
-            attachToRecyclerView(recyclerView)
-        }
     }
 
     // Delete all method
@@ -88,18 +59,19 @@ class RecyclerFragment : Fragment() {
     }
 
     private fun deleteAllUsers() {
-        val builder = AlertDialog.Builder(requireContext())
-        builder.setPositiveButton("OK") { _, _ ->
-            userViewModel.deleteAllUsers()
-            Toast.makeText(
-                requireContext(),
-                "All users are removed",
-                Toast.LENGTH_SHORT
-            ).show()
-        }
-        builder.setNegativeButton("No") { _, _ -> }
-        builder.setTitle("Delete All")
-        builder.setMessage("Do you want to delete all users?")
-        builder.create().show()
+        AlertDialog.Builder(requireContext())
+            .setPositiveButton("OK") { _, _ ->
+                userViewModel.deleteAllUsers()
+                Toast.makeText(
+                    requireContext(),
+                    "All users are removed",
+                    Toast.LENGTH_SHORT
+                ).show()
+            }
+            .setNegativeButton("No") { _, _ -> }
+            .setTitle("Delete All")
+            .setIcon(R.drawable.warning)
+            .setMessage("Do you want to delete all users?")
+            .create().show()
     }
 }
