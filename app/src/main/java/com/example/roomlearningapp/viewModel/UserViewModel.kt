@@ -11,11 +11,11 @@ import kotlinx.coroutines.launch
 
 class UserViewModel : ViewModel() {
 
-    lateinit var liveDataOfUser: LiveData<UserModel>
+    private lateinit var liveDataOfUser: LiveData<UserModel>
     lateinit var liveDataListOfUser: LiveData<List<UserModel>>
 
-    fun insertData(context: Context, firstName: String, lastName: String) {
-        UserRepository.insertData(context, firstName, lastName)
+    fun insertData(context: Context, userModel: UserModel) {
+        UserRepository.insertData(context, userModel)
     }
 
     fun getData(context: Context, firstName: String): LiveData<UserModel> {
@@ -26,6 +26,12 @@ class UserViewModel : ViewModel() {
     fun getAllData(context: Context): LiveData<List<UserModel>> {
         liveDataListOfUser = UserRepository.getAllUserDetails(context)!!
         return liveDataListOfUser
+    }
+
+    fun updateColor(color: Int, id: Int?) {
+        viewModelScope.launch(Dispatchers.IO) {
+            UserRepository.updateColor(color, id)
+        }
     }
 
     fun deleteAllUsers() {

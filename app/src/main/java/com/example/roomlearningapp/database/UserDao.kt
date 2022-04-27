@@ -16,9 +16,13 @@ interface UserDao {
     @Query("SELECT * FROM user_table")
     fun getAllUsers(): LiveData<List<UserModel>>
 
+    @Query("UPDATE user_table SET color_priority=:color WHERE id = :id")
+    suspend fun updateColor(color: Int, id: Int?)
+
     @Query("DELETE FROM user_table")
     suspend fun deleteAllUsers()
 
     @Delete
     suspend fun deleteUser(userModel: UserModel)
+
 }

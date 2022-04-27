@@ -17,9 +17,10 @@ import com.example.roomlearningapp.viewModel.UserViewModel
 
 private const val TAG = "UserListAdapter"
 
-class UserListAdapter(private var userList: List<UserModel>, private val context: Context) :
+class UserListAdapter(private val context: Context) :
     RecyclerView.Adapter<UserListAdapter.UserViewHolder>() {
 
+    private var userList = emptyList<UserModel>()
     val viewModel = UserViewModel()
 
     override fun onCreateViewHolder(
@@ -44,6 +45,14 @@ class UserListAdapter(private var userList: List<UserModel>, private val context
             binding.findViewById<TextView>(R.id.name).text = lastNameString
             binding.findViewById<TextView>(R.id.menu_item)
                 .setOnLongClickListener { popupMenus(it, this) }
+
+            if (userModel.colorPriority == 0) {
+                binding.findViewById<LinearLayout>(R.id.text_container)
+                    .setBackgroundColor(context.resources.getColor(R.color.purple_200))
+            } else {
+                binding.findViewById<LinearLayout>(R.id.text_container)
+                    .setBackgroundColor(context.resources.getColor(R.color.highlight_color))
+            }
         }
 
         // Item menu
@@ -65,7 +74,11 @@ class UserListAdapter(private var userList: List<UserModel>, private val context
                             .setPositiveButton(context.resources.getString(R.string.ok)) { dialog, _ ->
                                 viewModel.deleteUser(getItemByID(viewHolder.adapterPosition))
                                 notifyItemRemoved(viewHolder.adapterPosition)
-                                Toast.makeText(context, context.getString(R.string.user_deleted), Toast.LENGTH_SHORT)
+                                Toast.makeText(
+                                    context,
+                                    context.getString(R.string.user_deleted),
+                                    Toast.LENGTH_SHORT
+                                )
                                     .show()
                                 dialog.dismiss()
                             }
@@ -80,10 +93,10 @@ class UserListAdapter(private var userList: List<UserModel>, private val context
                         true
                     }
                     R.id.highlight_user -> {
-                        viewHolder.itemView
-                            .findViewById<LinearLayout>(R.id.text_container)
-                            .setBackgroundColor(context.resources.getColor(R.color.highlight_color))
-                        Log.d(TAG, "Highlight user")
+                        val selectedId = getItemByID(viewHolder.adapterPosition).id
+                        val currentColor = getItemByID(viewHolder.adapterPosition).colorPriority
+                        val newColor = changeColor(currentColor)
+                        viewModel.updateColor(newColor, selectedId)
                         true
                     }
                     else -> true
@@ -100,5 +113,18 @@ class UserListAdapter(private var userList: List<UserModel>, private val context
 
     override fun getItemCount(): Int {
         return userList.size
+    }
+
+    fun changeColor(currentColor: Int): Int {
+        return if (currentColor == 0) {
+            1
+        } else {
+            0
+        }
+    }
+
+    fun setData(userList: List<UserModel>) {
+        this.userList = userList
+        notifyDataSetChanged()
     }
 }

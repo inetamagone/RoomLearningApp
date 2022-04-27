@@ -16,12 +16,10 @@ class UserRepository {
         private var userModel: LiveData<UserModel>? = null
         private var userModelList: LiveData<List<UserModel>>? = null
 
-        fun insertData(context: Context, firstName: String, lastName: String) {
+        fun insertData(context: Context, userModel: UserModel) {
             userDatabase = initializeDB(context)
-
             CoroutineScope(Dispatchers.IO).launch {
-                val userInfo = UserModel(firstName, lastName)
-                userDatabase!!.getUserDao().insertData(userInfo)
+                userDatabase!!.getUserDao().insertData(userModel)
             }
         }
 
@@ -39,11 +37,15 @@ class UserRepository {
             return userModelList
         }
 
-        suspend fun deleteAllUsers(){
+        suspend fun updateColor(color: Int, id: Int?) =
+            userDatabase!!.getUserDao().updateColor(color, id)
+
+        suspend fun deleteAllUsers() {
             userDatabase!!.getUserDao().deleteAllUsers()
         }
 
-        suspend fun deleteUser(userModel: UserModel) = userDatabase!!.getUserDao().deleteUser(userModel)
+        suspend fun deleteUser(userModel: UserModel) =
+            userDatabase!!.getUserDao().deleteUser(userModel)
 
         private fun initializeDB(context: Context): UserDatabase {
             return UserDatabase.createDatabase(context)

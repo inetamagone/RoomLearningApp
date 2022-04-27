@@ -12,6 +12,7 @@ import android.widget.Button
 import android.widget.TextView
 import android.widget.Toast
 import androidx.lifecycle.ViewModelProvider
+import com.example.roomlearningapp.model.UserModel
 import com.example.roomlearningapp.viewModel.UserViewModel
 import com.google.android.material.textfield.TextInputEditText
 
@@ -34,7 +35,8 @@ class HomeFragment : Fragment() {
         val view = inflater.inflate(R.layout.fragment_home, container, false)
 
         view.findViewById<Button>(R.id.submit_button).setOnClickListener {
-            firstNameString = view.findViewById<TextInputEditText>(R.id.first_name).text.formatting()
+            firstNameString =
+                view.findViewById<TextInputEditText>(R.id.first_name).text.formatting()
             lastNameString = view.findViewById<TextInputEditText>(R.id.last_name).text.formatting()
 
             // Save entries into the database
@@ -56,7 +58,12 @@ class HomeFragment : Fragment() {
                         .show()
                 }
                 else -> {
-                    userViewModel.insertData(requireActivity(), firstNameString, lastNameString)
+                    val newUser = UserModel(
+                        firstName = firstNameString,
+                        lastName = lastNameString,
+                        colorPriority = 0
+                    )
+                    userViewModel.insertData(requireActivity(), newUser)
                     Log.d(TAG, "Inserted into database!")
                 }
             }
