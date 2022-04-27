@@ -32,7 +32,7 @@ class RecyclerFragment : Fragment() {
         userViewModel.getAllData(requireActivity())
             .observe(viewLifecycleOwner) { users ->
                 if (users == null) {
-                    Log.d(TAG, "Data was not found!")
+                    Log.d(TAG, getString(R.string.data_not_found))
                 } else {
                     users.let {
                         adapter = UserListAdapter(users, requireContext())
@@ -60,18 +60,18 @@ class RecyclerFragment : Fragment() {
 
     private fun deleteAllUsers() {
         AlertDialog.Builder(requireContext())
-            .setPositiveButton("OK") { _, _ ->
+            .setPositiveButton(getString(R.string.ok)) { _, _ ->
                 userViewModel.deleteAllUsers()
                 Toast.makeText(
                     requireContext(),
-                    "All users are removed",
+                    getString(R.string.all_users_removed),
                     Toast.LENGTH_SHORT
                 ).show()
             }
-            .setNegativeButton("No") { _, _ -> }
-            .setTitle("Delete All")
+            .setNegativeButton(getString(R.string.no)) { _, _ -> }
+            .setTitle(getString(R.string.delete))
             .setIcon(R.drawable.warning)
-            .setMessage("Do you want to delete all users?")
+            .setMessage(getString(R.string.delete_all_users))
             .create().show()
     }
 }

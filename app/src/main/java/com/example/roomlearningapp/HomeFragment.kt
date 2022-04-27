@@ -42,7 +42,7 @@ class HomeFragment : Fragment() {
                 firstNameString.isEmpty() -> {
                     Toast.makeText(
                         requireContext(),
-                        "Please enter your First name!",
+                        getString(R.string.enter_first_name),
                         Toast.LENGTH_SHORT
                     )
                         .show()
@@ -50,7 +50,7 @@ class HomeFragment : Fragment() {
                 lastNameString.isEmpty() -> {
                     Toast.makeText(
                         requireContext(),
-                        "Please enter your Last name!",
+                        getString(R.string.enter_last_name),
                         Toast.LENGTH_SHORT
                     )
                         .show()
@@ -65,9 +65,9 @@ class HomeFragment : Fragment() {
             userViewModel.getData(requireActivity(), firstNameString)
                 .observe(viewLifecycleOwner) {
                     if (it == null) {
-                        Log.d(TAG, "Data was not found!")
+                        Log.d(TAG, getString(R.string.data_not_found))
                     } else {
-                        val outputText = "Your name is ${it.firstName} ${it.lastName}"
+                        val outputText = getString(R.string.output_text, it.firstName, it.lastName)
                         requireActivity().findViewById<TextView>(R.id.output).text = outputText
 
                         requireActivity().findViewById<TextInputEditText>(R.id.first_name)

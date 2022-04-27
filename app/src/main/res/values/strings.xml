@@ -4,16 +4,28 @@
     <string name="user_name_output_hint">User name output</string>
     <string name="first_name_hint">First Name</string>
     <string name="last_name_hint">Last Name</string>
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="list_name">User List:</string>
     <string name="first_name">First Name</string>
     <string name="last_name">Last Name</string>
-    <string name="delete_btn">Delete</string>
+    <string name="home_title">Home</string>
+    <string name="recycler_title">Recycler</string>
+    <string name="output_text">Your name is %1$s %2$s</string>
+
     <string name="menu_dots">⋮</string>
     <string name="move_user_up">Move user up</string>
     <string name="move_user_down">Move user down</string>
     <string name="delete_user">Delete user</string>
     <string name="highlight_user">Highlight user</string>
-    <string name="delelete">Delete</string>
+
+    <string name="ok">OK</string>
+    <string name="no">No</string>
+    <string name="delete">Delete</string>
+    <string name="user_deleted">User deleted!</string>
+    <string name="all_users_removed">All users are removed</string>
+
+    <string name="delete_all_users">Do you want to delete all users?</string>
+    <string name="delete_this_user">Delete this User?</string>
+    <string name="enter_first_name">Please enter your First name!</string>
+    <string name="enter_last_name">Please enter your Last name!</string>
+    <string name="data_not_found">Data was not found!</string>
 </resources>

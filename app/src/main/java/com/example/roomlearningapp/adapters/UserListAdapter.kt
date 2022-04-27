@@ -2,7 +2,6 @@ package com.example.roomlearningapp.adapters
 
 import android.app.AlertDialog
 import android.content.Context
-import android.graphics.Color
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -11,7 +10,6 @@ import android.widget.LinearLayout
 import android.widget.PopupMenu
 import android.widget.TextView
 import android.widget.Toast
-import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.example.roomlearningapp.R
 import com.example.roomlearningapp.model.UserModel
@@ -64,19 +62,19 @@ class UserListAdapter(private var userList: List<UserModel>, private val context
                     }
                     R.id.remove_user -> {
                         AlertDialog.Builder(context)
-                            .setPositiveButton("OK") { dialog, _ ->
+                            .setPositiveButton(context.resources.getString(R.string.ok)) { dialog, _ ->
                                 viewModel.deleteUser(getItemByID(viewHolder.adapterPosition))
                                 notifyItemRemoved(viewHolder.adapterPosition)
-                                Toast.makeText(context, "User deleted!", Toast.LENGTH_SHORT)
+                                Toast.makeText(context, context.getString(R.string.user_deleted), Toast.LENGTH_SHORT)
                                     .show()
                                 dialog.dismiss()
                             }
-                            .setNegativeButton("No") { dialog, _ ->
+                            .setNegativeButton(context.getString(R.string.no)) { dialog, _ ->
                                 dialog.dismiss()
                             }
-                            .setTitle(context.getString(R.string.delelete))
+                            .setTitle(context.getString(R.string.delete))
                             .setIcon(R.drawable.warning)
-                            .setMessage("Delete this User?")
+                            .setMessage(context.getString(R.string.delete_this_user))
                             .create()
                             .show()
                         true
@@ -104,7 +102,3 @@ class UserListAdapter(private var userList: List<UserModel>, private val context
         return userList.size
     }
 }
-
-//private fun View.setBackgroundColor() {
-//    this.setBackgroundColor(Color.parseColor("#ffffff"))
-//}
