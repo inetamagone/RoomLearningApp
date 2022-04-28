@@ -63,6 +63,7 @@ class UserListAdapter(private val context: Context) :
                 when (it.itemId) {
                     R.id.move_up -> {
                         val currentItem = getItemByID(viewHolder.adapterPosition)
+                        val currentItemId = currentItem.id
                         val currentPosition = viewHolder.adapterPosition
 
                         if (currentPosition != 0) {
@@ -72,6 +73,7 @@ class UserListAdapter(private val context: Context) :
 
                             val itemBPosition = currentPosition - 1
                             val itemB = getItemByID(itemBPosition)
+                            val itemBid = itemB.id
                             val itemBfirstName = itemB.firstName
                             val itemBlastName = itemB.lastName
                             val itemBcolor = itemB.colorPriority
@@ -84,6 +86,8 @@ class UserListAdapter(private val context: Context) :
                             itemB.lastName = currentLastName
                             itemB.colorPriority = currentColor
 
+                            viewModel.updateUser(itemBfirstName, itemBlastName, itemBcolor, currentItemId)
+                            viewModel.updateUser(currentFirstName, currentLastName, currentColor, itemBid)
                             notifyDataSetChanged()
                             Log.d(TAG, "Move up")
                         } else {
@@ -95,8 +99,8 @@ class UserListAdapter(private val context: Context) :
                     R.id.move_down -> {
                         val listSize = userList.size
                         val currentItem = getItemByID(viewHolder.adapterPosition)
+                        val currentItemId = currentItem.id
                         val currentPosition = viewHolder.adapterPosition
-                        Log.d(TAG, "currentPosition, $currentPosition")
 
                         if (currentPosition < (listSize - 1)) {
                             val currentFirstName = currentItem.firstName
@@ -105,6 +109,7 @@ class UserListAdapter(private val context: Context) :
 
                             val itemBPosition = currentPosition + 1
                             val itemB = getItemByID(itemBPosition)
+                            val itemBid = itemB.id
                             val itemBfirstName = itemB.firstName
                             val itemBlastName = itemB.lastName
                             val itemBcolor = itemB.colorPriority
@@ -117,6 +122,8 @@ class UserListAdapter(private val context: Context) :
                             itemB.lastName = currentLastName
                             itemB.colorPriority = currentColor
 
+                            viewModel.updateUser(itemBfirstName, itemBlastName, itemBcolor, currentItemId)
+                            viewModel.updateUser(currentFirstName, currentLastName, currentColor, itemBid)
                             notifyDataSetChanged()
                             Log.d(TAG, "Move down")
                         } else {

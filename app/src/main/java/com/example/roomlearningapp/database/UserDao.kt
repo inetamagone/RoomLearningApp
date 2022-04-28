@@ -19,6 +19,9 @@ interface UserDao {
     @Query("UPDATE user_table SET color_priority=:color WHERE id = :id")
     suspend fun updateColor(color: Int, id: Int?)
 
+    @Query("UPDATE user_table SET first_name =:firstName ,last_name=:lastName, color_priority=:color WHERE id = :id")
+    suspend fun updateUser(firstName: String, lastName: String, color: Int, id: Int?)
+
     @Query("DELETE FROM user_table")
     suspend fun deleteAllUsers()
 

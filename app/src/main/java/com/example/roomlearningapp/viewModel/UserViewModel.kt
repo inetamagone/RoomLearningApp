@@ -34,6 +34,12 @@ class UserViewModel : ViewModel() {
         }
     }
 
+    fun updateUser(firstName: String, lastName: String, color: Int, id: Int?) {
+        viewModelScope.launch(Dispatchers.IO) {
+            UserRepository.updateUser(firstName, lastName, color, id)
+        }
+    }
+
     fun deleteAllUsers() {
         viewModelScope.launch(Dispatchers.IO) {
             UserRepository.deleteAllUsers()
