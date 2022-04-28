@@ -13,7 +13,7 @@ interface UserDao {
     @Query("SELECT * FROM user_table WHERE first_name = :firstName")
     fun getUserInfo(firstName: String?): LiveData<UserModel>
 
-    @Query("SELECT * FROM user_table")
+    @Query("SELECT * FROM user_table ORDER BY id DESC")
     fun getAllUsers(): LiveData<List<UserModel>>
 
     @Query("UPDATE user_table SET color_priority=:color WHERE id = :id")

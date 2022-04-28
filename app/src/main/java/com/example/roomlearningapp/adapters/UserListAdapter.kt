@@ -62,11 +62,66 @@ class UserListAdapter(private val context: Context) :
             popupMenus.setOnMenuItemClickListener {
                 when (it.itemId) {
                     R.id.move_up -> {
-                        Log.d(TAG, "Move up")
+                        val currentItem = getItemByID(viewHolder.adapterPosition)
+                        val currentPosition = viewHolder.adapterPosition
+
+                        if (currentPosition != 0) {
+                            val currentFirstName = currentItem.firstName
+                            val currentLastName = currentItem.lastName
+                            val currentColor = currentItem.colorPriority
+
+                            val itemBPosition = currentPosition - 1
+                            val itemB = getItemByID(itemBPosition)
+                            val itemBfirstName = itemB.firstName
+                            val itemBlastName = itemB.lastName
+                            val itemBcolor = itemB.colorPriority
+
+                            currentItem.firstName = itemBfirstName
+                            currentItem.lastName = itemBlastName
+                            currentItem.colorPriority = itemBcolor
+
+                            itemB.firstName = currentFirstName
+                            itemB.lastName = currentLastName
+                            itemB.colorPriority = currentColor
+
+                            notifyDataSetChanged()
+                            Log.d(TAG, "Move up")
+                        } else {
+                            Log.d(TAG, "This user is already on the top of the list")
+                        }
+
                         true
                     }
                     R.id.move_down -> {
-                        Log.d(TAG, "Move down")
+                        val listSize = userList.size
+                        val currentItem = getItemByID(viewHolder.adapterPosition)
+                        val currentPosition = viewHolder.adapterPosition
+                        Log.d(TAG, "currentPosition, $currentPosition")
+
+                        if (currentPosition < (listSize - 1)) {
+                            val currentFirstName = currentItem.firstName
+                            val currentLastName = currentItem.lastName
+                            val currentColor = currentItem.colorPriority
+
+                            val itemBPosition = currentPosition + 1
+                            val itemB = getItemByID(itemBPosition)
+                            val itemBfirstName = itemB.firstName
+                            val itemBlastName = itemB.lastName
+                            val itemBcolor = itemB.colorPriority
+
+                            currentItem.firstName = itemBfirstName
+                            currentItem.lastName = itemBlastName
+                            currentItem.colorPriority = itemBcolor
+
+                            itemB.firstName = currentFirstName
+                            itemB.lastName = currentLastName
+                            itemB.colorPriority = currentColor
+
+                            notifyDataSetChanged()
+                            Log.d(TAG, "Move down")
+                        } else {
+                            Log.d(TAG, "This user is on the bottom of the list")
+                        }
                         true
                     }
                     R.id.remove_user -> {
