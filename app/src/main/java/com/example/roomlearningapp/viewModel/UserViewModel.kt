@@ -11,44 +11,35 @@ import kotlinx.coroutines.launch
 
 class UserViewModel : ViewModel() {
 
-    private lateinit var liveDataOfUser: LiveData<UserModel>
-    lateinit var liveDataListOfUser: LiveData<List<UserModel>>
-
-    fun insertData(context: Context, userModel: UserModel) {
+    fun insertData(context: Context, userModel: UserModel) =
         UserRepository.insertData(context, userModel)
-    }
 
     fun getData(context: Context, firstName: String): LiveData<UserModel> {
-        liveDataOfUser = UserRepository.getUserDetails(context, firstName)!!
-        return liveDataOfUser
+        return UserRepository.getUserDetails(context, firstName)
     }
 
     fun getAllData(context: Context): LiveData<List<UserModel>> {
-        liveDataListOfUser = UserRepository.getAllUserDetails(context)!!
-        return liveDataListOfUser
+        return UserRepository.getAllUserDetails(context)
     }
 
-    fun updateColor(color: Int, id: Int?) {
+    fun updateColor(color: Int, id: Int?) =
         viewModelScope.launch(Dispatchers.IO) {
             UserRepository.updateColor(color, id)
         }
-    }
 
-    fun updateUser(firstName: String, lastName: String, color: Int, id: Int?) {
+
+    fun updateUser(firstName: String, lastName: String, color: Int, id: Int?) =
         viewModelScope.launch(Dispatchers.IO) {
             UserRepository.updateUser(firstName, lastName, color, id)
         }
-    }
 
-    fun deleteAllUsers() {
+    fun deleteAllUsers() =
         viewModelScope.launch(Dispatchers.IO) {
             UserRepository.deleteAllUsers()
         }
-    }
 
-    fun deleteUser(userModel: UserModel) {
+    fun deleteUser(userModel: UserModel) =
         viewModelScope.launch(Dispatchers.IO) {
             UserRepository.deleteUser(userModel)
         }
-    }
 }

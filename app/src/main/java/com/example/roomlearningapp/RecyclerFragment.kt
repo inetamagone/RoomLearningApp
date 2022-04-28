@@ -35,7 +35,6 @@ class RecyclerFragment : Fragment() {
                     Log.d(TAG, getString(R.string.data_not_found))
                 } else {
                     users.let {
-                        Log.d(TAG, "Observe users: $users")
                         adapter = UserListAdapter(requireContext())
                         recyclerView.adapter = adapter
                         adapter.setData(users)

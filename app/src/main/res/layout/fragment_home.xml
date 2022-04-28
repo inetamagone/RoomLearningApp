@@ -11,7 +11,6 @@
         android:layout_height="match_parent"
         android:gravity="center"
         android:orientation="vertical">
-
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/first_name"
             android:layout_width="wrap_content"
@@ -24,11 +23,9 @@
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
-
         <Space
             android:layout_width="match_parent"
             android:layout_height="@dimen/space_10" />
-
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/last_name"
             android:layout_width="wrap_content"
@@ -41,22 +38,18 @@
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toBottomOf="@id/first_name" />
-
         <Space
             android:layout_width="match_parent"
             android:layout_height="@dimen/space_10" />
-
         <Button
             android:id="@+id/submit_button"
             android:layout_width="@dimen/btn_width"
             android:layout_height="@dimen/btn_height"
             android:backgroundTint="@color/purple_500"
             android:text="@string/submit_btn" />
-
         <Space
             android:layout_width="match_parent"
             android:layout_height="@dimen/space_30" />
-
         <TextView
             android:id="@+id/output"
             android:layout_width="wrap_content"

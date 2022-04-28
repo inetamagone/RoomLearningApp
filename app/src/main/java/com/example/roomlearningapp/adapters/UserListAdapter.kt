@@ -2,7 +2,6 @@ package com.example.roomlearningapp.adapters
 
 import android.app.AlertDialog
 import android.content.Context
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -14,8 +13,6 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.roomlearningapp.R
 import com.example.roomlearningapp.model.UserModel
 import com.example.roomlearningapp.viewModel.UserViewModel
-
-private const val TAG = "UserListAdapter"
 
 class UserListAdapter(private val context: Context) :
     RecyclerView.Adapter<UserListAdapter.UserViewHolder>() {
@@ -74,26 +71,39 @@ class UserListAdapter(private val context: Context) :
                             val itemBPosition = currentPosition - 1
                             val itemB = getItemByID(itemBPosition)
                             val itemBid = itemB.id
-                            val itemBfirstName = itemB.firstName
-                            val itemBlastName = itemB.lastName
-                            val itemBcolor = itemB.colorPriority
+                            val itemBFirstName = itemB.firstName
+                            val itemBLastName = itemB.lastName
+                            val itemBColor = itemB.colorPriority
 
-                            currentItem.firstName = itemBfirstName
-                            currentItem.lastName = itemBlastName
-                            currentItem.colorPriority = itemBcolor
+                            currentItem.firstName = itemBFirstName
+                            currentItem.lastName = itemBLastName
+                            currentItem.colorPriority = itemBColor
 
                             itemB.firstName = currentFirstName
                             itemB.lastName = currentLastName
                             itemB.colorPriority = currentColor
 
-                            viewModel.updateUser(itemBfirstName, itemBlastName, itemBcolor, currentItemId)
-                            viewModel.updateUser(currentFirstName, currentLastName, currentColor, itemBid)
+                            viewModel.updateUser(
+                                itemBFirstName,
+                                itemBLastName,
+                                itemBColor,
+                                currentItemId
+                            )
+                            viewModel.updateUser(
+                                currentFirstName,
+                                currentLastName,
+                                currentColor,
+                                itemBid
+                            )
                             notifyDataSetChanged()
-                            Log.d(TAG, "Move up")
                         } else {
-                            Log.d(TAG, "This user is already on the top of the list")
+                            Toast.makeText(
+                                context,
+                                context.getString(R.string.list_top_message),
+                                Toast.LENGTH_SHORT
+                            )
+                                .show()
                         }
-
                         true
                     }
                     R.id.move_down -> {
@@ -110,24 +120,38 @@ class UserListAdapter(private val context: Context) :
                             val itemBPosition = currentPosition + 1
                             val itemB = getItemByID(itemBPosition)
                             val itemBid = itemB.id
-                            val itemBfirstName = itemB.firstName
-                            val itemBlastName = itemB.lastName
-                            val itemBcolor = itemB.colorPriority
+                            val itemBFirstName = itemB.firstName
+                            val itemBLastName = itemB.lastName
+                            val itemBColor = itemB.colorPriority
 
-                            currentItem.firstName = itemBfirstName
-                            currentItem.lastName = itemBlastName
-                            currentItem.colorPriority = itemBcolor
+                            currentItem.firstName = itemBFirstName
+                            currentItem.lastName = itemBLastName
+                            currentItem.colorPriority = itemBColor
 
                             itemB.firstName = currentFirstName
                             itemB.lastName = currentLastName
                             itemB.colorPriority = currentColor
 
-                            viewModel.updateUser(itemBfirstName, itemBlastName, itemBcolor, currentItemId)
-                            viewModel.updateUser(currentFirstName, currentLastName, currentColor, itemBid)
+                            viewModel.updateUser(
+                                itemBFirstName,
+                                itemBLastName,
+                                itemBColor,
+                                currentItemId
+                            )
+                            viewModel.updateUser(
+                                currentFirstName,
+                                currentLastName,
+                                currentColor,
+                                itemBid
+                            )
                             notifyDataSetChanged()
-                            Log.d(TAG, "Move down")
                         } else {
-                            Log.d(TAG, "This user is on the bottom of the list")
+                            Toast.makeText(
+                                context,
+                                context.getString(R.string.list_bottom_message),
+                                Toast.LENGTH_SHORT
+                            )
+                                .show()
                         }
                         true
                     }

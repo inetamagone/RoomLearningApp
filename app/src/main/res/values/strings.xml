@@ -28,4 +28,6 @@
     <string name="enter_first_name">Please enter your First name!</string>
     <string name="enter_last_name">Please enter your Last name!</string>
     <string name="data_not_found">Data was not found!</string>
+    <string name="list_bottom_message">This user is on the bottom of the list</string>
+    <string name="list_top_message">This user is already on the top of the list</string>
 </resources>

@@ -1,6 +1,5 @@
 package com.example.roomlearningapp
 
-import android.annotation.SuppressLint
 import android.os.Bundle
 import android.text.Editable
 import android.util.Log
@@ -24,12 +23,10 @@ class HomeFragment : Fragment() {
     private lateinit var firstNameString: String
     private lateinit var lastNameString: String
 
-    @SuppressLint("SetTextI18n")
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        Log.d(TAG, "onCreateView called")
         userViewModel = ViewModelProvider(this)[UserViewModel::class.java]
 
         val view = inflater.inflate(R.layout.fragment_home, container, false)
@@ -64,7 +61,6 @@ class HomeFragment : Fragment() {
                         colorPriority = 0
                     )
                     userViewModel.insertData(requireActivity(), newUser)
-                    Log.d(TAG, "Inserted into database!")
                 }
             }
 
@@ -76,12 +72,10 @@ class HomeFragment : Fragment() {
                     } else {
                         val outputText = getString(R.string.output_text, it.firstName, it.lastName)
                         requireActivity().findViewById<TextView>(R.id.output).text = outputText
-
                         requireActivity().findViewById<TextInputEditText>(R.id.first_name)
                             .setText("")
                         requireActivity().findViewById<TextInputEditText>(R.id.last_name)
                             .setText("")
-                        Log.d(TAG, "Data got successfully!")
                     }
                 }
         }
