@@ -3,33 +3,24 @@ package com.example.roomlearningapp
 import android.os.Bundle
 import android.text.Editable
 import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import android.widget.Toast
 import androidx.lifecycle.ViewModelProvider
 import com.example.roomlearningapp.databinding.FragmentHomeBinding
 import com.example.roomlearningapp.model.UserModel
 import com.example.roomlearningapp.viewModel.UserViewModel
 
-class HomeFragment : Fragment() {
+class HomeFragment : Fragment(R.layout.fragment_home) {
 
     private lateinit var binding: FragmentHomeBinding
     private lateinit var userViewModel: UserViewModel
     private lateinit var firstNameString: String
     private lateinit var lastNameString: String
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
-        binding = FragmentHomeBinding.inflate(layoutInflater)
-        return binding.root
-    }
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        binding = FragmentHomeBinding.bind(view)
         userViewModel = ViewModelProvider(this)[UserViewModel::class.java]
 
         binding.submitButton.setOnClickListener() {
@@ -75,8 +66,7 @@ class HomeFragment : Fragment() {
                         )
                             .show()
                     } else {
-                        val outputText = getString(R.string.output_text, it.firstName, it.lastName)
-                        binding.output.text = outputText
+                        binding.output.text = getString(R.string.output_text, it.firstName, it.lastName)
                         binding.firstName
                             .setText("")
                         binding.lastName

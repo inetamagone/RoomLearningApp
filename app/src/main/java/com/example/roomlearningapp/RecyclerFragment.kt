@@ -2,41 +2,41 @@ package com.example.roomlearningapp
 
 import android.app.AlertDialog
 import android.os.Bundle
-import android.util.Log
 import android.view.*
 import androidx.fragment.app.Fragment
 import android.widget.Toast
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import com.example.roomlearningapp.adapters.UserListAdapter
+import com.example.roomlearningapp.databinding.FragmentRecyclerBinding
 import com.example.roomlearningapp.viewModel.UserViewModel
 
-private const val TAG = "RecyclerFragment"
+class RecyclerFragment : Fragment(R.layout.fragment_recycler) {
 
-class RecyclerFragment : Fragment() {
-
+    private lateinit var binding: FragmentRecyclerBinding
     private lateinit var userViewModel: UserViewModel
     private lateinit var adapter: UserListAdapter
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        val view = inflater.inflate(R.layout.fragment_recycler, container, false)
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        binding = FragmentRecyclerBinding.bind(view)
         userViewModel = ViewModelProvider(this)[UserViewModel::class.java]
-
-        val recyclerView = view.findViewById<RecyclerView>(R.id.recycler_view)
-
+        val recyclerView = binding.recyclerView
         // Getting data from the database and passing to the adapter
         userViewModel.getAllData(requireActivity())
             .observe(viewLifecycleOwner) { users ->
                 if (users == null) {
-                    Log.d(TAG, getString(R.string.data_not_found))
+                    Toast.makeText(
+                        requireContext(),
+                        getString(R.string.data_not_found),
+                        Toast.LENGTH_SHORT
+                    )
+                        .show()
                 } else {
                     users.let {
                         adapter = UserListAdapter(requireContext())
-                        recyclerView.adapter = adapter
+                        binding.recyclerView.adapter = adapter
                         adapter.setData(users)
                         recyclerView.layoutManager = LinearLayoutManager(requireContext())
                     }
@@ -44,7 +44,6 @@ class RecyclerFragment : Fragment() {
             }
         // Add options menu
         setHasOptionsMenu(true)
-        return view
     }
 
     // Delete all method

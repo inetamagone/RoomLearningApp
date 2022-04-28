@@ -21,7 +21,6 @@ class MainActivity : AppCompatActivity() {
             .commit()
         val bottomNav: BottomNavigationView = binding.bottomNavigation
         bottomNav.setOnNavigationItemSelectedListener(bottomNavListener)
-
     }
 
     // Navigation listener
