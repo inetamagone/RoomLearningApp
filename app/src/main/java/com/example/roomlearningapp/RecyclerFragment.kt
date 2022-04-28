@@ -35,9 +35,8 @@ class RecyclerFragment : Fragment(R.layout.fragment_recycler) {
                         .show()
                 } else {
                     users.let {
-                        adapter = UserListAdapter(requireContext())
+                        adapter = UserListAdapter(users, requireContext())
                         binding.recyclerView.adapter = adapter
-                        adapter.setData(users)
                         recyclerView.layoutManager = LinearLayoutManager(requireContext())
                     }
                 }

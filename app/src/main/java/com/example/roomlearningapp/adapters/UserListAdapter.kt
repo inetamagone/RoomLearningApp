@@ -13,10 +13,9 @@ import com.example.roomlearningapp.databinding.ListItemBinding
 import com.example.roomlearningapp.model.UserModel
 import com.example.roomlearningapp.viewModel.UserViewModel
 
-class UserListAdapter(private val context: Context) :
+class UserListAdapter(private val userList: List<UserModel>, private val context: Context) :
     RecyclerView.Adapter<UserListAdapter.UserViewHolder>() {
 
-    private var userList = emptyList<UserModel>()
     val viewModel = UserViewModel()
 
     override fun onCreateViewHolder(
@@ -33,10 +32,8 @@ class UserListAdapter(private val context: Context) :
     inner class UserViewHolder(private val binding: ListItemBinding) :
         RecyclerView.ViewHolder(binding.root) {
         fun bind(userModel: UserModel) {
-            val firstNameString = userModel.firstName
-            val lastNameString = userModel.lastName
-            binding.surname.text = firstNameString
-            binding.name.text = lastNameString
+            binding.surname.text = userModel.firstName
+            binding.name.text = userModel.lastName
             binding.menuItem
                 .setOnLongClickListener { popupMenus(it, this) }
 
@@ -204,10 +201,5 @@ class UserListAdapter(private val context: Context) :
         } else {
             0
         }
-    }
-
-    fun setData(userList: List<UserModel>) {
-        this.userList = userList
-        notifyDataSetChanged()
     }
 }
