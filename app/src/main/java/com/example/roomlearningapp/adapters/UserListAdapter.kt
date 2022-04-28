@@ -5,12 +5,11 @@ import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.LinearLayout
 import android.widget.PopupMenu
-import android.widget.TextView
 import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import com.example.roomlearningapp.R
+import com.example.roomlearningapp.databinding.ListItemBinding
 import com.example.roomlearningapp.model.UserModel
 import com.example.roomlearningapp.viewModel.UserViewModel
 
@@ -24,30 +23,28 @@ class UserListAdapter(private val context: Context) :
         parent: ViewGroup,
         viewType: Int
     ): UserViewHolder {
-        val root = LayoutInflater.from(parent.context)
-            .inflate(R.layout.list_item, parent, false)
-        return UserViewHolder(root, context)
+        return UserViewHolder(ListItemBinding.inflate(LayoutInflater.from(parent.context), parent, false))
     }
 
     override fun onBindViewHolder(holder: UserViewHolder, position: Int) {
         holder.bind(userList[position])
     }
 
-    inner class UserViewHolder(private val binding: View, private val context: Context) :
-        RecyclerView.ViewHolder(binding) {
+    inner class UserViewHolder(private val binding: ListItemBinding) :
+        RecyclerView.ViewHolder(binding.root) {
         fun bind(userModel: UserModel) {
             val firstNameString = userModel.firstName
             val lastNameString = userModel.lastName
-            binding.findViewById<TextView>(R.id.surname).text = firstNameString
-            binding.findViewById<TextView>(R.id.name).text = lastNameString
-            binding.findViewById<TextView>(R.id.menu_item)
+            binding.surname.text = firstNameString
+            binding.name.text = lastNameString
+            binding.menuItem
                 .setOnLongClickListener { popupMenus(it, this) }
 
             if (userModel.colorPriority == 0) {
-                binding.findViewById<LinearLayout>(R.id.text_container)
+                binding.textContainer
                     .setBackgroundColor(context.resources.getColor(R.color.purple_200))
             } else {
-                binding.findViewById<LinearLayout>(R.id.text_container)
+                binding.textContainer
                     .setBackgroundColor(context.resources.getColor(R.color.highlight_color))
             }
         }
@@ -119,7 +116,7 @@ class UserListAdapter(private val context: Context) :
 
                             val itemBPosition = currentPosition + 1
                             val itemB = getItemByID(itemBPosition)
-                            val itemBid = itemB.id
+                            val itemBId = itemB.id
                             val itemBFirstName = itemB.firstName
                             val itemBLastName = itemB.lastName
                             val itemBColor = itemB.colorPriority
@@ -142,7 +139,7 @@ class UserListAdapter(private val context: Context) :
                                 currentFirstName,
                                 currentLastName,
                                 currentColor,
-                                itemBid
+                                itemBId
                             )
                             notifyDataSetChanged()
                         } else {
