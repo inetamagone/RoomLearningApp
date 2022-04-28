@@ -13,14 +13,23 @@ import com.example.roomlearningapp.viewModel.UserViewModel
 
 class RecyclerFragment : Fragment(R.layout.fragment_recycler) {
 
-    private lateinit var binding: FragmentRecyclerBinding
+    private var _binding: FragmentRecyclerBinding? = null
+    private val binding get() = _binding!!
+
     private lateinit var userViewModel: UserViewModel
     private lateinit var adapter: UserListAdapter
 
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+        _binding = FragmentRecyclerBinding.inflate(inflater, container, false)
+        return binding.root
+    }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-        binding = FragmentRecyclerBinding.bind(view)
         userViewModel = ViewModelProvider(this)[UserViewModel::class.java]
         val recyclerView = binding.recyclerView
         // Getting data from the database and passing to the adapter
@@ -72,5 +81,10 @@ class RecyclerFragment : Fragment(R.layout.fragment_recycler) {
             .setIcon(R.drawable.warning)
             .setMessage(getString(R.string.delete_all_users))
             .create().show()
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 }
