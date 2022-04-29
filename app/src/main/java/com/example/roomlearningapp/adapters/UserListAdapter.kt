@@ -16,7 +16,7 @@ import com.example.roomlearningapp.viewModel.UserViewModel
 class UserListAdapter(private val userList: List<UserModel>, private val context: Context) :
     RecyclerView.Adapter<UserListAdapter.UserViewHolder>() {
 
-    val viewModel = UserViewModel()
+    private val viewModel = UserViewModel()
 
     override fun onCreateViewHolder(
         parent: ViewGroup,
@@ -44,12 +44,15 @@ class UserListAdapter(private val userList: List<UserModel>, private val context
                 menuItem.setOnLongClickListener { popupMenus(it, this@UserViewHolder) }
             }
 
-            if (userModel.colorPriority == 0) {
-                binding.textContainer
-                    .setBackgroundColor(context.resources.getColor(R.color.purple_200))
-            } else {
-                binding.textContainer
-                    .setBackgroundColor(context.resources.getColor(R.color.highlight_color))
+            when {
+                !userModel.colorHighlighted -> {
+                    binding.textContainer
+                        .setBackgroundColor(context.resources.getColor(R.color.purple_200))
+                }
+                else -> {
+                    binding.textContainer
+                        .setBackgroundColor(context.resources.getColor(R.color.highlight_color))
+                }
             }
         }
 
@@ -150,32 +153,32 @@ class UserListAdapter(private val userList: List<UserModel>, private val context
 
         val currentFirstName = currentItem.firstName
         val currentLastName = currentItem.lastName
-        val currentColor = currentItem.colorPriority
+        val currentHighlightState = currentItem.colorHighlighted
 
         val itemB = getItemByID(itemBPosition)
         val itemBid = itemB.id
         val itemBFirstName = itemB.firstName
         val itemBLastName = itemB.lastName
-        val itemBColor = itemB.colorPriority
+        val itemBHighlightState = itemB.colorHighlighted
 
         currentItem.firstName = itemBFirstName
         currentItem.lastName = itemBLastName
-        currentItem.colorPriority = itemBColor
+        currentItem.colorHighlighted = itemBHighlightState
 
         itemB.firstName = currentFirstName
         itemB.lastName = currentLastName
-        itemB.colorPriority = currentColor
+        itemB.colorHighlighted = currentHighlightState
 
         viewModel.updateUser(
             itemBFirstName,
             itemBLastName,
-            itemBColor,
+            itemBHighlightState,
             currentItemId
         )
         viewModel.updateUser(
             currentFirstName,
             currentLastName,
-            currentColor,
+            currentHighlightState,
             itemBid
         )
         notifyDataSetChanged()
@@ -207,22 +210,22 @@ class UserListAdapter(private val userList: List<UserModel>, private val context
 
     fun highlightUser(viewHolder: UserListAdapter.UserViewHolder) {
         val selectedId = getItemByID(viewHolder.adapterPosition).id
-        val currentColorIndex = getItemByID(viewHolder.adapterPosition).colorPriority
-        val newColorIndex = changeColorIndex(currentColorIndex)
-        viewModel.updateColor(newColorIndex, selectedId)
+        val currentColorHighlighted = getItemByID(viewHolder.adapterPosition).colorHighlighted
+        val newColorHighlighted = isUserHighlighted(currentColorHighlighted)
+        viewModel.updateColor(newColorHighlighted, selectedId)
     }
 
     //Poor piece of code.
 // 1. it can be simplified by using Kotlin "expression body"
 // 2. if it return only 0 or 1 it should be boolean I suppouse
 // 3. Don't want to go deep in code but I don't think that variable name currentColor represent value stored. and function name changeColor also doesn't represent it's functionality.
-    private fun changeColorIndex(currentColorIndex: Int): Int =
-        when (currentColorIndex) {
-            0 -> {
-                1
+    private fun isUserHighlighted(currentColorHighlighted: Boolean): Boolean =
+        when (currentColorHighlighted) {
+            false -> {
+                true
             }
-            else -> {
-                0
+            true -> {
+                false
             }
         }
 

@@ -16,11 +16,11 @@ interface UserDao {
     @Query("SELECT * FROM user_table ORDER BY id DESC")
     fun getAllUsers(): LiveData<List<UserModel>>
 
-    @Query("UPDATE user_table SET color_priority=:colorIndex WHERE id = :id")
-    suspend fun updateColor(colorIndex: Int, id: Int?)
+    @Query("UPDATE user_table SET color_highlighted=:highlightState WHERE id = :id")
+    suspend fun updateColor(highlightState: Boolean, id: Int?)
 
-    @Query("UPDATE user_table SET first_name =:firstName ,last_name=:lastName, color_priority=:color WHERE id = :id")
-    suspend fun updateUser(firstName: String, lastName: String, color: Int, id: Int?)
+    @Query("UPDATE user_table SET first_name =:firstName ,last_name=:lastName, color_highlighted=:highlightState WHERE id = :id")
+    suspend fun updateUser(firstName: String, lastName: String, highlightState: Boolean, id: Int?)
 
     @Query("DELETE FROM user_table")
     suspend fun deleteAllUsers()

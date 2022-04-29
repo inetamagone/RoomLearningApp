@@ -61,7 +61,6 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
                     val newUser = UserModel(
                         firstName = firstNameString,
                         lastName = lastNameString,
-                        colorPriority = 0
                     )
                     userViewModel.insertData(requireActivity(), newUser)
                 }

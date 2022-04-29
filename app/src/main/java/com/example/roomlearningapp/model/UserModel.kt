@@ -12,6 +12,6 @@ data class UserModel(
     var firstName: String,
     @ColumnInfo(name = "last_name")
     var lastName: String,
-    @ColumnInfo(name = "color_priority")
-    var colorPriority: Int
+    @ColumnInfo(name = "color_highlighted")
+    var colorHighlighted: Boolean = false
 )
