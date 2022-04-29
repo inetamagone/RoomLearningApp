@@ -3,6 +3,7 @@ package com.example.roomlearningapp.adapters
 import android.app.AlertDialog
 import android.content.Context
 import android.view.LayoutInflater
+import android.view.MenuInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.PopupMenu
@@ -12,6 +13,8 @@ import com.example.roomlearningapp.R
 import com.example.roomlearningapp.databinding.ListItemBinding
 import com.example.roomlearningapp.model.UserModel
 import com.example.roomlearningapp.viewModel.UserViewModel
+import java.lang.reflect.Field
+
 
 class UserListAdapter(private val userList: List<UserModel>, private val context: Context) :
     RecyclerView.Adapter<UserListAdapter.UserViewHolder>() {
@@ -58,8 +61,10 @@ class UserListAdapter(private val userList: List<UserModel>, private val context
 
         // Item menu
         private fun popupMenus(view: View, viewHolder: UserViewHolder): Boolean {
-            PopupMenu(context, view).apply {
+            val popupMenus = PopupMenu(context, view)
+            popupMenus.apply {
                 inflate(R.menu.item_menu)
+                setForceShowIcon(popupMenus)
                 setOnMenuItemClickListener {
                     val isDirectionUp: Boolean
 /*              Code will be much more readable if you will do it like this. (Define separate functions)
@@ -78,6 +83,8 @@ class UserListAdapter(private val userList: List<UserModel>, private val context
                 */
                     when (it.itemId) {
                         R.id.move_up -> {
+
+                            //it.icon = AppCompatResources.getDrawable(context, R.drawable.arrow_up)
                             isDirectionUp = true
                             moveItem(isDirectionUp, viewHolder)
                             true
@@ -101,6 +108,29 @@ class UserListAdapter(private val userList: List<UserModel>, private val context
                 show()
             }
             return true
+        }
+    }
+
+    fun setForceShowIcon(popupMenu: PopupMenu) {
+        try {
+            val fields: Array<Field> = popupMenu.javaClass.declaredFields
+            for (field in fields) {
+                if ("mPopup" == field.name) {
+                    field.isAccessible = true
+                    val menuPopupHelper: Any = field.get(popupMenu) as Any
+                    val classPopupHelper = Class.forName(
+                        menuPopupHelper
+                            .javaClass.name
+                    )
+                    val setForceIcons = classPopupHelper.getMethod(
+                        "setForceShowIcon", Boolean::class.javaPrimitiveType
+                    )
+                    setForceIcons.invoke(menuPopupHelper, true)
+                    break
+                }
+            }
+        } catch (e: Throwable) {
+            e.printStackTrace()
         }
     }
 
