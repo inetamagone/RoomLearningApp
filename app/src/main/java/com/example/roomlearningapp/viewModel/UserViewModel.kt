@@ -22,9 +22,9 @@ class UserViewModel : ViewModel() {
         return UserRepository.getAllUserDetails(context)
     }
 
-    fun updateColor(color: Int, id: Int?) =
+    fun updateColor(colorIndex: Int, id: Int?) =
         viewModelScope.launch(Dispatchers.IO) {
-            UserRepository.updateColor(color, id)
+            UserRepository.updateColor(colorIndex, id)
         }
 
 

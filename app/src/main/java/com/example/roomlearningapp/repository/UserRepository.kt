@@ -31,8 +31,8 @@ class UserRepository {
             return userDatabase.getUserDao().getAllUsers()
         }
 
-        suspend fun updateColor(color: Int, id: Int?) =
-            userDatabase.getUserDao().updateColor(color, id)
+        suspend fun updateColor(colorIndex: Int, id: Int?) =
+            userDatabase.getUserDao().updateColor(colorIndex, id)
 
         suspend fun updateUser(firstName: String, lastName: String, color: Int, id: Int?) =
             userDatabase.getUserDao().updateUser(firstName, lastName, color, id)

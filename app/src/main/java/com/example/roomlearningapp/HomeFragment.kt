@@ -2,8 +2,10 @@ package com.example.roomlearningapp
 
 import android.os.Bundle
 import android.text.Editable
+import android.view.LayoutInflater
 import androidx.fragment.app.Fragment
 import android.view.View
+import android.view.ViewGroup
 import android.widget.Toast
 import androidx.lifecycle.ViewModelProvider
 import com.example.roomlearningapp.databinding.FragmentHomeBinding
@@ -12,15 +14,25 @@ import com.example.roomlearningapp.viewModel.UserViewModel
 
 class HomeFragment : Fragment(R.layout.fragment_home) {
 
-    private lateinit var binding: FragmentHomeBinding
+    private var _binding: FragmentHomeBinding? = null
+    private val binding get() = _binding!!
+
     private lateinit var userViewModel: UserViewModel
     private lateinit var firstNameString: String
     private lateinit var lastNameString: String
 
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
+        _binding = FragmentHomeBinding.inflate(inflater, container, false)
+        return binding.root
+    }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        binding = FragmentHomeBinding.bind(view)
         userViewModel = ViewModelProvider(this)[UserViewModel::class.java]
 
         binding.submitButton.setOnClickListener() {
@@ -74,7 +86,10 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
                     }
                 }
         }
-
+    }
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 }
 

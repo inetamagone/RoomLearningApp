@@ -23,7 +23,7 @@ class RecyclerFragment : Fragment(R.layout.fragment_recycler) {
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         _binding = FragmentRecyclerBinding.inflate(inflater, container, false)
         return binding.root
     }
