@@ -11,6 +11,7 @@ import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import com.example.roomlearningapp.R
 import com.example.roomlearningapp.databinding.ListItemBinding
+import com.example.roomlearningapp.model.MoveDirection
 import com.example.roomlearningapp.model.UserModel
 import com.example.roomlearningapp.viewModel.UserViewModel
 import java.lang.reflect.Field
@@ -83,15 +84,11 @@ class UserListAdapter(private val userList: List<UserModel>, private val context
                 */
                     when (it.itemId) {
                         R.id.move_up -> {
-
-                            //it.icon = AppCompatResources.getDrawable(context, R.drawable.arrow_up)
-                            isDirectionUp = true
-                            moveItem(isDirectionUp, viewHolder)
+                            moveItem(MoveDirection.UP, viewHolder)
                             true
                         }
                         R.id.move_down -> {
-                            isDirectionUp = false
-                            moveItem(isDirectionUp, viewHolder)
+                            moveItem(MoveDirection.DOWN, viewHolder)
                             true
                         }
                         R.id.remove_user -> {
@@ -142,13 +139,13 @@ class UserListAdapter(private val userList: List<UserModel>, private val context
         return userList.size
     }
 
-    private fun moveItem(isDirectionUp: Boolean, viewHolder: UserViewHolder) {
+    private fun moveItem(direction: MoveDirection, viewHolder: UserViewHolder) {
         val currentPosition = viewHolder.adapterPosition
         val listSize = userList.size
         val itemBPosition: Int
 
-        when (isDirectionUp) {
-            true ->
+        when (direction) {
+            MoveDirection.UP ->
                 when {
                     currentPosition != 0 -> {
                         itemBPosition = currentPosition - 1
@@ -161,7 +158,7 @@ class UserListAdapter(private val userList: List<UserModel>, private val context
                     )
                         .show()
                 }
-            false ->
+            MoveDirection.DOWN ->
                 when {
                     currentPosition < (listSize - 1) -> {
                         itemBPosition = currentPosition + 1

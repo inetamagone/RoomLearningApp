@@ -39,6 +39,7 @@
             android:layout_weight="1"
             android:gravity="end"
             android:text="@string/menu_dots"
+            android:padding="@dimen/space_10"
             android:textAppearance="?android:textAppearanceLarge" />
     </LinearLayout>
 
