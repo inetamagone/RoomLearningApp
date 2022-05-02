@@ -4,14 +4,13 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="5dp"
+    android:padding="@dimen/space_5"
     tools:context=".RecyclerFragment">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
-
         <TextView
             android:id="@+id/title_text"
             android:layout_width="match_parent"
@@ -19,13 +18,11 @@
             android:gravity="center"
             android:text="@string/list_name"
             android:textColor="@color/black"
-            android:textSize="30sp"
+            android:textSize="@dimen/text_30"
             android:textStyle="bold" />
-
         <Space
             android:layout_width="wrap_content"
-            android:layout_height="10dp" />
-
+            android:layout_height="@dimen/space_10" />
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recycler_view"
             android:layout_width="match_parent"
@@ -34,4 +31,5 @@
             app:layoutManager="LinearLayoutManager"
             app:layout_constraintTop_toBottomOf="@+id/title_text" />
     </LinearLayout>
+
 </FrameLayout>

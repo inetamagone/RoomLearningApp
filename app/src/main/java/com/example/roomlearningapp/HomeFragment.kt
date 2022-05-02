@@ -1,48 +1,50 @@
 package com.example.roomlearningapp
 
-import android.annotation.SuppressLint
 import android.os.Bundle
 import android.text.Editable
-import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
+import androidx.fragment.app.Fragment
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
-import android.widget.TextView
 import android.widget.Toast
 import androidx.lifecycle.ViewModelProvider
+import com.example.roomlearningapp.databinding.FragmentHomeBinding
+import com.example.roomlearningapp.model.UserModel
 import com.example.roomlearningapp.viewModel.UserViewModel
-import com.google.android.material.textfield.TextInputEditText
 
-private const val TAG = "HomeFragment"
+class HomeFragment : Fragment(R.layout.fragment_home) {
 
-class HomeFragment : Fragment() {
+    private var _binding: FragmentHomeBinding? = null
+    private val binding get() = _binding!!
 
     private lateinit var userViewModel: UserViewModel
     private lateinit var firstNameString: String
     private lateinit var lastNameString: String
 
-    @SuppressLint("SetTextI18n")
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
+        inflater: LayoutInflater,
+        container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
-        Log.d(TAG, "onCreateView called")
+    ): View {
+        _binding = FragmentHomeBinding.inflate(inflater, container, false)
+        return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
         userViewModel = ViewModelProvider(this)[UserViewModel::class.java]
 
-        val view = inflater.inflate(R.layout.fragment_home, container, false)
-
-        view.findViewById<Button>(R.id.submit_button).setOnClickListener {
-            firstNameString = view.findViewById<TextInputEditText>(R.id.first_name).text.formatting()
-            lastNameString = view.findViewById<TextInputEditText>(R.id.last_name).text.formatting()
+        binding.submitButton.setOnClickListener() {
+            firstNameString = binding.firstName.text.formatting()
+            lastNameString = binding.lastName.text.formatting()
 
             // Save entries into the database
             when {
                 firstNameString.isEmpty() -> {
                     Toast.makeText(
                         requireContext(),
-                        "Please enter your First name!",
+                        getString(R.string.enter_first_name),
                         Toast.LENGTH_SHORT
                     )
                         .show()
@@ -50,14 +52,17 @@ class HomeFragment : Fragment() {
                 lastNameString.isEmpty() -> {
                     Toast.makeText(
                         requireContext(),
-                        "Please enter your Last name!",
+                        getString(R.string.enter_last_name),
                         Toast.LENGTH_SHORT
                     )
                         .show()
                 }
                 else -> {
-                    userViewModel.insertData(requireActivity(), firstNameString, lastNameString)
-                    Log.d(TAG, "Inserted into database!")
+                    val newUser = UserModel(
+                        firstName = firstNameString,
+                        lastName = lastNameString,
+                    )
+                    userViewModel.insertData(requireActivity(), newUser)
                 }
             }
 
@@ -65,20 +70,25 @@ class HomeFragment : Fragment() {
             userViewModel.getData(requireActivity(), firstNameString)
                 .observe(viewLifecycleOwner) {
                     if (it == null) {
-                        Log.d(TAG, "Data was not found!")
+                        Toast.makeText(
+                            requireContext(),
+                            getString(R.string.data_not_found),
+                            Toast.LENGTH_SHORT
+                        )
+                            .show()
                     } else {
-                        val outputText = "Your name is ${it.firstName} ${it.lastName}"
-                        requireActivity().findViewById<TextView>(R.id.output).text = outputText
-
-                        requireActivity().findViewById<TextInputEditText>(R.id.first_name)
+                        binding.output.text = getString(R.string.output_text, it.firstName, it.lastName)
+                        binding.firstName
                             .setText("")
-                        requireActivity().findViewById<TextInputEditText>(R.id.last_name)
+                        binding.lastName
                             .setText("")
-                        Log.d(TAG, "Data got successfully!")
                     }
                 }
         }
-        return view
+    }
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 }
 

@@ -12,38 +12,36 @@ class UserRepository {
 
     companion object {
 
-        private var userDatabase: UserDatabase? = null
-        private var userModel: LiveData<UserModel>? = null
-        private var userModelList: LiveData<List<UserModel>>? = null
+        private lateinit var userDatabase: UserDatabase
 
-        fun insertData(context: Context, firstName: String, lastName: String) {
+        fun insertData(context: Context, userModel: UserModel) {
             userDatabase = initializeDB(context)
-
             CoroutineScope(Dispatchers.IO).launch {
-                val userInfo = UserModel(firstName, lastName)
-                userDatabase!!.getUserDao().insertData(userInfo)
+                userDatabase.getUserDao().insertData(userModel)
             }
         }
 
-        fun getUserDetails(context: Context, firstName: String): LiveData<UserModel>? {
+        fun getUserDetails(context: Context, firstName: String): LiveData<UserModel> {
             userDatabase = initializeDB(context)
-
-            userModel = userDatabase!!.getUserDao().getUserInfo(firstName)
-            return userModel
+            return userDatabase.getUserDao().getUserInfo(firstName)
         }
 
-        fun getAllUserDetails(context: Context): LiveData<List<UserModel>>? {
+        fun getAllUserDetails(context: Context): LiveData<List<UserModel>> {
             userDatabase = initializeDB(context)
-
-            userModelList = userDatabase!!.getUserDao().getAllUsers()
-            return userModelList
+            return userDatabase.getUserDao().getAllUsers()
         }
 
-        suspend fun deleteAllUsers(){
-            userDatabase!!.getUserDao().deleteAllUsers()
-        }
+        suspend fun updateColor(highlightState: Boolean, id: Int?) =
+            userDatabase.getUserDao().updateColor(highlightState, id)
 
-        suspend fun deleteUser(userModel: UserModel) = userDatabase!!.getUserDao().deleteUser(userModel)
+        suspend fun updateUser(firstName: String, lastName: String, highlightState: Boolean, id: Int?) =
+            userDatabase.getUserDao().updateUser(firstName, lastName, highlightState, id)
+
+        suspend fun deleteAllUsers() =
+            userDatabase.getUserDao().deleteAllUsers()
+
+        suspend fun deleteUser(userModel: UserModel) =
+            userDatabase.getUserDao().deleteUser(userModel)
 
         private fun initializeDB(context: Context): UserDatabase {
             return UserDatabase.createDatabase(context)
