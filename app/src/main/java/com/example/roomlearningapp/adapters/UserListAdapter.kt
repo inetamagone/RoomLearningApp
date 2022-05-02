@@ -3,7 +3,6 @@ package com.example.roomlearningapp.adapters
 import android.app.AlertDialog
 import android.content.Context
 import android.view.LayoutInflater
-import android.view.MenuInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.PopupMenu
@@ -11,11 +10,11 @@ import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import com.example.roomlearningapp.R
 import com.example.roomlearningapp.databinding.ListItemBinding
+import com.example.roomlearningapp.model.ColorOption
 import com.example.roomlearningapp.model.MoveDirection
 import com.example.roomlearningapp.model.UserModel
 import com.example.roomlearningapp.viewModel.UserViewModel
 import java.lang.reflect.Field
-
 
 class UserListAdapter(private val userList: List<UserModel>, private val context: Context) :
     RecyclerView.Adapter<UserListAdapter.UserViewHolder>() {
@@ -48,8 +47,12 @@ class UserListAdapter(private val userList: List<UserModel>, private val context
                 menuItem.setOnLongClickListener { popupMenus(it, this@UserViewHolder) }
             }
 
-            when {
-                !userModel.colorHighlighted -> {
+            when (userModel.color) {
+                ColorOption.NONE.color -> {
+                    binding.textContainer
+                        .setBackgroundColor(context.resources.getColor(R.color.default_gray))
+                }
+                ColorOption.PURPLE.color -> {
                     binding.textContainer
                         .setBackgroundColor(context.resources.getColor(R.color.purple_200))
                 }
@@ -67,7 +70,6 @@ class UserListAdapter(private val userList: List<UserModel>, private val context
                 inflate(R.menu.item_menu)
                 setForceShowIcon(popupMenus)
                 setOnMenuItemClickListener {
-                    val isDirectionUp: Boolean
 /*              Code will be much more readable if you will do it like this. (Define separate functions)
 
                 Also I didn't check your moveUp/Down realisation but pretty sure it can be done by one common function something like this:
@@ -139,7 +141,7 @@ class UserListAdapter(private val userList: List<UserModel>, private val context
         return userList.size
     }
 
-    private fun moveItem(direction: MoveDirection, viewHolder: UserViewHolder) {
+    private fun moveItem(direction: MoveDirection, viewHolder: UserListAdapter.UserViewHolder) {
         val currentPosition = viewHolder.adapterPosition
         val listSize = userList.size
         val itemBPosition: Int
@@ -180,39 +182,39 @@ class UserListAdapter(private val userList: List<UserModel>, private val context
 
         val currentFirstName = currentItem.firstName
         val currentLastName = currentItem.lastName
-        val currentHighlightState = currentItem.colorHighlighted
+        val currentColor = currentItem.color
 
         val itemB = getItemByID(itemBPosition)
         val itemBid = itemB.id
         val itemBFirstName = itemB.firstName
         val itemBLastName = itemB.lastName
-        val itemBHighlightState = itemB.colorHighlighted
+        val itemBColor = itemB.color
 
         currentItem.firstName = itemBFirstName
         currentItem.lastName = itemBLastName
-        currentItem.colorHighlighted = itemBHighlightState
+        currentItem.color = itemBColor
 
         itemB.firstName = currentFirstName
         itemB.lastName = currentLastName
-        itemB.colorHighlighted = currentHighlightState
+        itemB.color = currentColor
 
         viewModel.updateUser(
             itemBFirstName,
             itemBLastName,
-            itemBHighlightState,
+            itemBColor,
             currentItemId
         )
         viewModel.updateUser(
             currentFirstName,
             currentLastName,
-            currentHighlightState,
+            currentColor,
             itemBid
         )
         notifyDataSetChanged()
     }
 
 
-    private fun removeUser(viewHolder: UserListAdapter.UserViewHolder) {
+    private fun removeUser(viewHolder: UserListAdapter.UserViewHolder) =
         AlertDialog.Builder(context)
             .setPositiveButton(context.resources.getString(R.string.ok)) { dialog, _ ->
                 viewModel.deleteUser(getItemByID(viewHolder.adapterPosition))
@@ -233,27 +235,38 @@ class UserListAdapter(private val userList: List<UserModel>, private val context
             .setMessage(context.getString(R.string.delete_this_user))
             .create()
             .show()
-    }
 
-    fun highlightUser(viewHolder: UserListAdapter.UserViewHolder) {
+    private fun highlightUser(viewHolder: UserListAdapter.UserViewHolder) {
         val selectedId = getItemByID(viewHolder.adapterPosition).id
-        val currentColorHighlighted = getItemByID(viewHolder.adapterPosition).colorHighlighted
-        val newColorHighlighted = isUserHighlighted(currentColorHighlighted)
-        viewModel.updateColor(newColorHighlighted, selectedId)
+        val currentColor = getItemByID(viewHolder.adapterPosition).color
+        val currentColorOption = getCurrentColorOption(currentColor)
+        val newColor = changeUserColor(currentColorOption)
+        viewModel.updateColor(newColor, selectedId)
     }
 
-    //Poor piece of code.
-// 1. it can be simplified by using Kotlin "expression body"
-// 2. if it return only 0 or 1 it should be boolean I suppouse
-// 3. Don't want to go deep in code but I don't think that variable name currentColor represent value stored. and function name changeColor also doesn't represent it's functionality.
-    private fun isUserHighlighted(currentColorHighlighted: Boolean): Boolean =
-        when (currentColorHighlighted) {
-            false -> {
-                true
+    private fun getCurrentColorOption(currentColor: Int): ColorOption =
+        when (currentColor) {
+            ColorOption.PURPLE.color -> {
+                ColorOption.PURPLE
             }
-            true -> {
-                false
+            ColorOption.HIGHLIGHTED.color -> {
+                ColorOption.HIGHLIGHTED
+            }
+            else -> {
+                ColorOption.NONE
             }
         }
 
+    private fun changeUserColor(currentColorOption: ColorOption): Int =
+        when (currentColorOption) {
+            ColorOption.NONE -> {
+                ColorOption.PURPLE.color
+            }
+            ColorOption.PURPLE -> {
+                ColorOption.HIGHLIGHTED.color
+            }
+            ColorOption.HIGHLIGHTED -> {
+                ColorOption.NONE.color
+            }
+        }
 }

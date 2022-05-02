@@ -31,11 +31,11 @@ class UserRepository {
             return userDatabase.getUserDao().getAllUsers()
         }
 
-        suspend fun updateColor(highlightState: Boolean, id: Int?) =
-            userDatabase.getUserDao().updateColor(highlightState, id)
+        suspend fun updateColor(color: Int, id: Int?) =
+            userDatabase.getUserDao().updateColor(color, id)
 
-        suspend fun updateUser(firstName: String, lastName: String, highlightState: Boolean, id: Int?) =
-            userDatabase.getUserDao().updateUser(firstName, lastName, highlightState, id)
+        suspend fun updateUser(firstName: String, lastName: String, color: Int, id: Int?) =
+            userDatabase.getUserDao().updateUser(firstName, lastName, color, id)
 
         suspend fun deleteAllUsers() =
             userDatabase.getUserDao().deleteAllUsers()

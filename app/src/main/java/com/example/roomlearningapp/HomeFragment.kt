@@ -9,6 +9,7 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.lifecycle.ViewModelProvider
 import com.example.roomlearningapp.databinding.FragmentHomeBinding
+import com.example.roomlearningapp.model.ColorOption
 import com.example.roomlearningapp.model.UserModel
 import com.example.roomlearningapp.viewModel.UserViewModel
 
@@ -61,6 +62,7 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
                     val newUser = UserModel(
                         firstName = firstNameString,
                         lastName = lastNameString,
+                        color = ColorOption.NONE.color
                     )
                     userViewModel.insertData(requireActivity(), newUser)
                 }

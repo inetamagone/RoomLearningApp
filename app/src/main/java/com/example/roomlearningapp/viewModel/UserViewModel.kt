@@ -22,15 +22,14 @@ class UserViewModel : ViewModel() {
         return UserRepository.getAllUserDetails(context)
     }
 
-    fun updateColor(highlightState: Boolean, id: Int?) =
+    fun updateColor(color: Int, id: Int?) =
         viewModelScope.launch(Dispatchers.IO) {
-            UserRepository.updateColor(highlightState, id)
+            UserRepository.updateColor(color, id)
         }
 
-
-    fun updateUser(firstName: String, lastName: String, highlightState: Boolean, id: Int?) =
+    fun updateUser(firstName: String, lastName: String, color: Int, id: Int?) =
         viewModelScope.launch(Dispatchers.IO) {
-            UserRepository.updateUser(firstName, lastName, highlightState, id)
+            UserRepository.updateUser(firstName, lastName, color, id)
         }
 
     fun deleteAllUsers() =
