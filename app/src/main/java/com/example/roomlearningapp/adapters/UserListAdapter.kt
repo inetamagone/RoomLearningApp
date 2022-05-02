@@ -50,15 +50,15 @@ class UserListAdapter(private val userList: List<UserModel>, private val context
             when (userModel.color) {
                 ColorOption.NONE.color -> {
                     binding.textContainer
-                        .setBackgroundColor(context.resources.getColor(R.color.default_gray))
+                        .setBackgroundColor(ColorOption.NONE.toArgb(context))
                 }
                 ColorOption.PURPLE.color -> {
                     binding.textContainer
-                        .setBackgroundColor(context.resources.getColor(R.color.purple_200))
+                        .setBackgroundColor(ColorOption.PURPLE.toArgb(context))
                 }
                 else -> {
                     binding.textContainer
-                        .setBackgroundColor(context.resources.getColor(R.color.highlight_color))
+                        .setBackgroundColor(ColorOption.HIGHLIGHTED.toArgb(context))
                 }
             }
         }
